@@ -1,0 +1,5 @@
+venv
+*.swp
+__*
+diff
+
