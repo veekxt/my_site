@@ -1,19 +1,37 @@
-{% extends 'my_base.html' %}
+{% extends 'base.html' %}
 {% block content -%}
 
-<div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
+<div class="panel panel-info">
+  <div class="panel-heading">请输入用户信息</div>
   <div class="panel-body">
-    Panel content
-  </div>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Panel title</h3>
-  </div>
-  <div class="panel-body">
-    Panel content
+  <form class="form-horizontal" method="POST">
+	  <div class="form-group">
+		<label for="" class="col-md-2 control-label">邮箱</label>
+		<div class="col-md-8">
+		  <input type="email" class="form-control" name="email" placeholder="Email">
+		</div>
+	  </div>
+	  <div class="form-group">
+		<label for="" class="col-md-2 control-label">密码</label>
+		<div class="col-md-8">
+		  <input type="password" class="form-control" name="password" placeholder="Password">
+		</div>
+	  </div>
+	  <div class="form-group">
+		<div class="col-md-offset-2 col-md-8">
+		  <div class="checkbox">
+			<label>
+			  <input type="checkbox"> 下次自动登录
+			</label>
+		  </div>
+		</div>
+	  </div>
+	  <div class="form-group">
+		<div class="col-md-offset-2 col-md-8">
+		  <button type="submit" class="btn btn-default">登录</button>
+		</div>
+	  </div>
+	</form>
   </div>
 </div>
 

@@ -1,5 +1,12 @@
 BLOG_NAME = 'VeekXT'
 
-class rec:pass
+BOOTSTRAP_SERVE_LOCAL = True
+SECRET_KEY = 'sbfpiulfbsaldfvbaskgjd'
 
-rec.test = 'ddd'
+# database
+DATABASE = 'postgresql://xietao:x@localhost:5432/my_blog'
+
+# admin
+ADMIN_NAME = 'veekxt'
+ADMIN_PASSWORD = '123456'
+
