@@ -4,7 +4,7 @@ BOOTSTRAP_SERVE_LOCAL = True
 SECRET_KEY = 'sbfpiulfbsaldfvbaskgjd'
 
 # database
-DATABASE = 'postgresql://xietao:x@localhost:5432/my_blog'
+DATABASE = 'mysql://root:mv@localhost:3306/my_blog'
 SQLALCHEMY_DATABASE_URI = DATABASE
 SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 SQLALCHEMY_TRACK_MODIFICATIONS = False

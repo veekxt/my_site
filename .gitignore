@@ -2,4 +2,6 @@ venv
 *.swp
 __*
 diff
+.*
+!.gitignore
 
