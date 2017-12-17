@@ -38,7 +38,7 @@ class Article(db.Model):
 
 @app.route('/data_test')
 def data_test():
-    article = Article(time='199 9-01-08 04:05:06', title="test_title", text="test_text")
+    article = Article(time='1999-01-08 04:05:06', title="test_title", text="test_text")
     db.session.add(article)
     db.session.commit()
     return str(article.id)+'++'+str(article.title)+'++'+str(article.text)
@@ -60,5 +60,3 @@ def user_register():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)
-
-
