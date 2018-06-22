@@ -1,4 +1,5 @@
 BLOG_NAME = 'VeekXT'
+GITHUB_LINK = 'https://github.com/veekxt'
 
 BOOTSTRAP_SERVE_LOCAL = True
 SECRET_KEY = 'sbfpiulfbsaldfvbaskgjd'
