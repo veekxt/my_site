@@ -1,0 +1,1 @@
+pip install flask flask_bootstrap flask_wtf flask_sqlalchemy

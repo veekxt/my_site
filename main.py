@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+import os
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
+from werkzeug.utils import secure_filename, redirect
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
@@ -73,6 +75,14 @@ def user_register():
         pass
     return render_template('register.html', form=form)
 
+@app.route('/up', methods=['GET', 'POST'])
+def my_upload():
+    if request.method == "POST":
+        f = request.files['file']
+        upload_path = os.path.join("/myvps", 'upload', secure_filename(f.filename))
+        f.save(upload_path)
+        return redirect(url_for('my_upload'))
+    return render_template('up.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='127.0.0.1', port=8000, debug=True)
