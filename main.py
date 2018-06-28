@@ -26,7 +26,7 @@ class RegisterForm(FlaskForm):
 
 
 app = Flask(__name__)
-app.config.from_object(config)
+app.config.from_object(config_t)
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
