@@ -9,7 +9,7 @@ from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 
-import config
+import config_t
 
 
 class LoginForm(FlaskForm):
