@@ -9,6 +9,8 @@ from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 
+from my_utils import my_secure_filename
+
 import config_t
 
 
@@ -79,7 +81,7 @@ def user_register():
 def my_upload():
     if request.method == "POST":
         f = request.files['file']
-        upload_path = os.path.join("/myvps", 'upload', secure_filename(f.filename))
+        upload_path = os.path.join("/myvps", 'upload', my_secure_filename(f.filename))
         f.save(upload_path)
         return redirect(url_for('my_upload'))
     return render_template('up.html')
