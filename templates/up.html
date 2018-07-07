@@ -51,7 +51,7 @@
                         var percent = event.loaded / event.total * 100;
                         percent = percent.toFixed(0);
                         document.querySelector("#up_pro").style.width = percent + "%";
-                        document.querySelector("#warn").innerText = "  进度 " + percent + "%";
+                        document.querySelector("#warn").innerText = "  进度 " + percent + "%, " + (event.loaded/1000000).toFixed(2)+"M/"+(event.total/1000000).toFixed(2)+"M";
                     }
                 }
                 //将formdata上传
