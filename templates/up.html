@@ -2,14 +2,63 @@
 {% block content -%}
 
     <p>
-    My upload api
+        My upload API
     </p>
-<br />
-
+    <br/>
     <form action="" enctype='multipart/form-data' method='POST'>
-        <input type="file" name="file">
-        <input type="submit" value="上传">
+        <div class="form-group">
+            <label for="">File input</label>
+            <input type="file" name="inputfile" id="inputfile">
+        </div>
     </form>
+    <button id="up_btn" class="btn btn-default">上传</button><span id="warn"></span>
+    <br/>
+    <br/>
+
+    <div class="progress">
+        <div id="up_pro" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0"
+             aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            <span id="up_warn"></span>
+        </div>
+    </div>
+
+    <script>
+        //监听上传按钮
+        document.querySelector("#up_btn").addEventListener("click", function () {
+            //获取到选中的文件
+            var file = document.querySelector("#inputfile").files[0];
+            if (file == undefined) {
+                ;
+            } else {
+                //创建formdata对象
+                var formdata = new FormData();
+                formdata.append("inputfile", file);
+                //创建xhr，使用ajax进行文件上传
+                var xhr = new XMLHttpRequest();
+                xhr.open("post", "/up");
+                //回调
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        //document.querySelector("#upcallback").innerText = xhr.responseText;
+                        document.querySelector("#up_pro").style.width = 0 ;
+                        document.querySelector("#warn").innerText = "  已完成: " + file.name;
+                        document.querySelector("#up_warn").innerText = "";
+                    }
+                }
+                //获取上传的进度
+                xhr.upload.onprogress = function (event) {
+                    if (event.lengthComputable) {
+                        var percent = event.loaded / event.total * 100;
+                        percent = percent.toFixed(0);
+                        document.querySelector("#up_pro").style.width = percent + "%";
+                        document.querySelector("#warn").innerText = "  进度 " + percent + "%";
+                    }
+                }
+                //将formdata上传
+                xhr.send(formdata);
+            }
+        });
+    </script>
 
 {%- endblock content -%}
 

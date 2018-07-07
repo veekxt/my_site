@@ -80,8 +80,14 @@ def user_register():
 @app.route('/up', methods=['GET', 'POST'])
 def my_upload():
     if request.method == "POST":
-        f = request.files['file']
-        upload_path = os.path.join("/myvps", 'upload', my_secure_filename(f.filename))
+        f = request.files['inputfile']
+        if os.name == "posix":
+            upload_path = os.path.join("/myvps", 'upload', my_secure_filename(f.filename))
+        elif os.name == "nt":
+            upload_path = os.path.join("e:\\tmp", '', my_secure_filename(f.filename))
+        else:
+            pass
+
         f.save(upload_path)
         return redirect(url_for('my_upload'))
     return render_template('up.html')
