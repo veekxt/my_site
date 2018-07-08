@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html>
 <body>
-
+<div id="area">将文件拖拽到此区域</div>
+<div id="preview"></div>
+<input type="file" id="file" onchange="onInputFileChange()">
+<video id="audio_id" controls autoplay loop>Your browser can't support HTML5 Audio</video>
+<script>
+function onInputFileChange() {
+var file = document.getElementById('file').files[0];
+var url = URL.createObjectURL(file);
+console.log(url);
+document.getElementById("audio_id").src = url;
+}
+</script>
 </body>
 </html>

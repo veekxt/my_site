@@ -4,4 +4,4 @@ __*
 diff
 .*
 !.gitignore
-config.py
+test/

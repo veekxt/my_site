@@ -2,7 +2,9 @@
 #main_container {
     width:1020px;
 }
-
+.xt-hidden{
+	display:none!important;
+}
 footer {
 	margin-top: 1em;
 	padding: 5px;
