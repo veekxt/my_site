@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content -%}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading my-title" id="article_title"></div>
+                <div class="panel-body" id="main_article">
+                    <div style="display: none" id="id-article">{{ id }}</div>
+                    <div id="ar_info" style="display: none">
+                        <span id="author"></span> 发布于 <span id="time"></span>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="list-group">
+                <li class="list-group-item list-group-item-info">标签</li>
+                <a class="list-group-item" href="#"><span class="badge">0</span>Java</a>
+                <a class="list-group-item" href="#"><span class="badge">21</span>Linux</a>
+            </div>
+        </div>
+
+    </div>
+{%- endblock content %}
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/commonmark.min.js"></script>
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", "/article_info/" + document.querySelector("#id-article").innerHTML);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let ar_js = JSON.parse(xhr.responseText)
+                //console.log(xhr.responseText)
+                let reader = new commonmark.Parser();
+                let writer = new commonmark.HtmlRenderer();
+                let parsed = reader.parse(ar_js["text"]); // parsed is a 'Node' tree
+                let result = writer.render(parsed); // result is a String
+                document.querySelector("#main_article").insertAdjacentHTML("beforeend", result);
+                document.querySelector("#article_title").innerHTML = ar_js["title"];
+                document.querySelector("#time").innerHTML = ar_js["time"];
+                document.querySelector("#author").innerHTML = ar_js["author"];
+                document.querySelector("#ar_info").style.display = "";
+            }
+        }
+        xhr.send();
+    </script>
+{% endblock scripts %}
+

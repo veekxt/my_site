@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content -%}
+    <div class="panel panel-info">
+    <div class="alert alert-warning" role="alert" id="warn" style="display:none;"></div>
+        <div class="panel-heading">新建文章</div>
+        <div class="panel-body">
+            <div class="input-group">
+                <span class="input-group-addon" >标题</span>
+                <input id="a_title" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon2">标签</span>
+                <input type="text" class="form-control" placeholder="使用逗号分割多个标签" aria-describedby="basic-addon1"
+                       id="input_tag">
+                <button type="button" class="btn btn-default" id="select_tags">选择已有标签</button>
+                <br/>
+                <span id="tagarea"></span>
+            </div>
+            <nav class="navbar navbar-default">
+                <button type="button" class="btn btn-default navbar-btn" id="edit_btn">编辑</button>
+                <button type="button" class="btn btn-default navbar-btn" id="pre_btn">预览</button>
+                <button type="button" class="btn btn-default navbar-btn" id="push_article">提交</button>
+
+                <textarea id="input_area" class="form-control" rows="20" placeholder="这里输入正文(markdown)"></textarea>
+                <div class="panel panel-info" id="preview_area" style="display:none;">
+                    <div class="panel-body">
+                    </div>
+                </div>
+            </nav>
+
+
+        </div>
+    </div>
+{%- endblock content %}
+{% block scripts %}
+    {{ super() }}
+    <script src="static/commonmark.min.js"></script>
+    <script>
+        var reader = new commonmark.Parser();
+        var writer = new commonmark.HtmlRenderer();
+        document.querySelector("#pre_btn").addEventListener("click", function () {
+            let input = document.querySelector("#input_area");
+            input.style.display = "none";
+            let preview = document.querySelector("#preview_area");
+            preview.style.display = "";
+            var parsed = reader.parse(input.value); // parsed is a 'Node' tree
+            var result = writer.render(parsed); // result is a String
+            preview.innerHTML = "<div class=\"panel-body\">" + result + "</div>";
+        });
+        document.querySelector("#edit_btn").addEventListener("click", function () {
+            document.querySelector("#input_area").style.display = "";
+            let preview = document.querySelector("#preview_area");
+            preview.style.display = "none";
+        });
+
+        document.querySelector("#push_article").addEventListener("click", function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", "/post_article");
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            let post ={
+                "title":document.querySelector("#a_title").value,
+                "tags":document.querySelector("#input_tag").value.split(","),
+                "main":document.querySelector("#input_area").value
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    if(xhr.responseText=="OK"){
+                        let warn=document.querySelector("#warn");
+                        warn.innerHTML="发布成功！";
+                        warn.style.display="";
+                        document.querySelector("#a_title").value="";
+                        document.querySelector("#input_tag").value="";
+                        document.querySelector("#input_area").value="";
+                    }else{
+                         warn.innerHTML="发布失败，错误("+xhr.responseText+")";
+                         warn.style.display="";
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(post));
+        });
+        document.querySelector("#select_tags").addEventListener("click", function () {
+            let tags_f = document.querySelector("#tagarea");
+            tags_f.innerHTML = "";
+            var xhr = new XMLHttpRequest();
+            xhr.open("get", "/select_tags");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let tagList = JSON.parse(xhr.responseText);
+                    for (var i in tagList) {
+                        tags_f.insertAdjacentHTML("beforeend", '<button class="btn btn-primary mytags" type="button"' + 'id="tag_' + i + '">' + tagList[i] + '</button>' + '&nbsp;');
+                    }
+                    tags_f.style.display = "";
+                    let taglistn = document.querySelectorAll(".mytags");
+
+
+                    for (var inde = 0; inde < taglistn.length; inde++) {
+                        var a = function (v) {
+                            return function () {
+                                let comma=""
+                                if(document.querySelector("#input_tag").value)
+                                    comma=", "
+                                document.querySelector("#input_tag").value += comma + document.querySelector("#tag_"+v).innerHTML;
+                                //console.log(document.querySelector("#input_tag").value.split(","));
+                            }
+                        }
+                        taglistn[inde].addEventListener("click", a(inde));
+                    }
+                }
+            }
+            xhr.send();
+        })
+        ;
+    </script>
+{% endblock %}
