@@ -5,6 +5,9 @@
 .xt-hidden{
 	display:none!important;
 }
+.my-title{
+	font-size: 18px!important;
+}
 footer {
 	margin-top: 1em;
 	padding: 5px;

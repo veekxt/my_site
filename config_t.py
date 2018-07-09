@@ -26,4 +26,4 @@ MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
 VEEKXT_MAIL_SENDER = "VeekXT <veekxt@gmail.com>"
 
-
+POSTS_PER_PAGE = 19
