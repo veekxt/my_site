@@ -12,7 +12,13 @@
             <div class="list-group">
 
                 {% for a in pagination.items %}
-                    <a class="xt-title list-group-item" href="{{ url_for("a_article",id=a.id) }}">{{ a.title }}<span
+                    <a class="xt-title list-group-item" href="{{ url_for("a_article",id=a.id) }}">
+                        {% if search_keyword %}
+                        {{ hgihtlight_word(a.title,search_keyword)|safe }}
+                            {% else %}
+                            {{ a.title }}
+                        {% endif %}
+                        <span
                             class="xt-right">{{ a.time }}</span></a>
                 {% endfor %}
 

@@ -16,7 +16,7 @@ from flask_login import LoginManager
 import json
 from flask_login import current_user, login_required
 
-from my_utils import my_secure_filename
+from my_utils import my_secure_filename,hgihtlight_word
 from data_model import db, Article, User, Tag
 from auth import login_manager
 
@@ -29,7 +29,7 @@ bootstrap = Bootstrap(app)
 db.init_app(app)
 login_manager.init_app(app)
 app.register_blueprint(auth_blueprint)
-
+app.jinja_env.globals.update(hgihtlight_word=hgihtlight_word)
 
 @app.route("/utils")
 def utils():
@@ -160,5 +160,16 @@ def del_article(id):
     flash("已删除一篇文章！")
     return redirect(url_for("index"))
 
+@app.route("/search")
+def search_article():
+    k = request.args.get("keyword")
+    if len(k)==0:
+        return redirect(url_for("index"))
+    ar = Article.query.filter(Article.title.like("%"+k+"%"))
+    pagination = ar.order_by(desc(Article.time)).paginate(1,per_page=1024,error_out=True)
+    return render_template('index.html', articles=pagination.items, pagination=pagination, tag_dict=get_tag_dict(),
+                           args=request.args, search_keyword=k)
+
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8000, debug=True)
+    print("sss")

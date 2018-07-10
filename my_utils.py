@@ -48,3 +48,7 @@ def my_secure_filename(filename):
         filename = '_' + filename
 
     return filename
+
+def hgihtlight_word(strw,keyword):
+    result, number = re.subn(keyword, '<span class="xt-matched">'+keyword+"</span>", strw)
+    return result
