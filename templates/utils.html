@@ -1,15 +1,48 @@
 {% extends 'base.html' %}
 {% block content -%}
+    <div class="row">
+        <div class="col-md-9">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-    <p>
-        utils test
-    </p>
+            <div class="panel panel-info">
 
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-warning" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
-{%- endblock content -%}
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    {% block utilutil_id_main %}
+                    {% endblock %}
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="list-group">
+                <li class="list-group-item list-group-item-info">杂项</li>
+                <a class="list-group-item" id="music" href="/utils/music">一些音乐</a>
+                <a class="list-group-item" id="brainfxxk" href="/utils/brainfxxk">brainfxxk解释器</a>
+                <a class="list-group-item" id="tetris" href="/utils/tetris">俄罗斯方块</a>
+
+            </div>
+        </div>
+
+    </div>
+{%- endblock content %}
 {% block scripts %}
     {{ super() }}
     <script>
-        document.querySelector("#nav-utils").classList.add("active");
+        document.querySelector("#{{ util_id }}").classList.add("active");
     </script>
 {% endblock %}

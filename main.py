@@ -31,8 +31,8 @@ login_manager.init_app(app)
 app.register_blueprint(auth_blueprint)
 app.jinja_env.globals.update(hgihtlight_word=hgihtlight_word)
 
-@app.route("/utils")
-def utils():
+#@app.route("/utils")
+#def utils():
 #    tag = Tag.query.all()
 #    for a in tag:
 #        print(a.name)
@@ -41,8 +41,8 @@ def utils():
 #        for ar in tagmap:
 #            print(ar.article)
 #            print(ar.article.title)
-
-    return render_template('utils.html')
+#
+#    return render_template('utils.html')
 
 def get_tag_dict():
     tag_dict = {}
@@ -169,6 +169,14 @@ def search_article():
     pagination = ar.order_by(desc(Article.time)).paginate(1,per_page=1024,error_out=True)
     return render_template('index.html', articles=pagination.items, pagination=pagination, tag_dict=get_tag_dict(),
                            args=request.args, search_keyword=k)
+
+@app.route("/utils")
+def utils_src():
+    return redirect(url_for("utils",wh="music"))
+
+@app.route("/utils/<wh>")
+def utils(wh):
+    return render_template(wh+".html",util_id=wh)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8000, debug=True)
