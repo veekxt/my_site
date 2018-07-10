@@ -95,7 +95,7 @@ def post_article():
         # flash("当前用户没有权限发布文章！")
         return "Cant access!"
     try:
-        article_info = json.loads(request.get_data())
+        article_info = json.loads(str(request.get_data(),encoding="utf-8"))
         article = Article(
             author=current_user.id,
             time=datetime.now(),
@@ -118,7 +118,7 @@ def post_article():
                 new_tag = Tag(name=i)
                 db.session.add(new_tag)
                 db.session.commit()
-                tag.articles.append(article)
+                new_tag.articles.append(article)
                 db.session.commit()
     except Exception as e:
         print(e)
