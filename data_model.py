@@ -22,22 +22,27 @@ class Article(db.Model):
     user = db.relationship('User', primaryjoin='Article.author == User.id', backref='articles')
 
 
+#class Tagmap(db.Model):
+#   __tablename__ = 'tagmap'
+#   id = db.Column(db.Integer, primary_key=True)
+#   tag_id = db.Column(db.ForeignKey('tag.id'), nullable=False, index=True)
+#   article_id = db.Column(db.ForeignKey('article.id'), index=True)
+#   article = db.relationship('Article', primaryjoin='Tagmap.article_id == Article.id', backref='tagmaps')
+#   tag = db.relationship('Tag', primaryjoin='Tagmap.tag_id == Tag.id', backref='tagmaps')
+
+tagmap = db.Table("tagmap",
+                  db.Column("tag_id", db.Integer, db.ForeignKey("tag.id")),
+                  db.Column("article_id", db.Integer, db.ForeignKey("article.id"))
+                   )
+
+
 class Tag(db.Model):
     __tablename__ = 'tag'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-
-
-class Tagmap(db.Model):
-    __tablename__ = 'tagmap'
-
-    id = db.Column(db.Integer, primary_key=True)
-    tag_id = db.Column(db.ForeignKey('tag.id'), nullable=False, index=True)
-    article_id = db.Column(db.ForeignKey('article.id'), index=True)
-
-    article = db.relationship('Article', primaryjoin='Tagmap.article_id == Article.id', backref='tagmaps')
-    tag = db.relationship('Tag', primaryjoin='Tagmap.tag_id == Tag.id', backref='tagmaps')
+    articles = db.relationship("Article", secondary=tagmap, backref=db.backref("tag", lazy="dynamic"),
+                               lazy="dynamic");
 
 
 class User(UserMixin, db.Model):

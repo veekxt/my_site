@@ -49,8 +49,9 @@
         <div class="col-md-3">
             <div class="list-group">
                 <li class="list-group-item list-group-item-info">标签</li>
-                <a class="list-group-item" href="#"><span class="badge">0</span>Java</a>
-                <a class="list-group-item" href="#"><span class="badge">21</span>Linux</a>
+                {% for tag in tag_dict %}
+                <a class="list-group-item" href="{{ url_for("index", tag=tag_dict[tag][0]) }}"><span class="badge">{{ tag_dict[tag][1] }}</span>{{ tag }}</a>
+                {% endfor %}
             </div>
         </div>
 
