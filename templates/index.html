@@ -2,10 +2,18 @@
 {% block content -%}
     <div class="row">
         <div class="col-md-9">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <div class="list-group">
 
                 {% for a in pagination.items %}
-                    <a class="list-group-item" href="{{ url_for("a_article",id=a.id) }}">{{ a.title }}</a>
+                    <a class="xt-title list-group-item" href="{{ url_for("a_article",id=a.id) }}">{{ a.title }}<span
+                            class="xt-right">{{ a.time }}</span></a>
                 {% endfor %}
 
             </div>
@@ -14,7 +22,13 @@
                     <form class="form-inline" action="/">
                         {% if pagination.has_prev %}
                             <li class="previous">
-                                <a href="{{ url_for("index",page=pagination.prev_num) }}"><span aria-hidden="true"></span>上一页</a>
+                                {% if args["tag"] %}
+                                    <a href="{{ url_for("index",page=pagination.prev_num,tag=args["tag"]) }}"><span
+                                            aria-hidden="true"></span>上一页</a>
+                                {% else %}
+                                    <a href="{{ url_for("index",page=pagination.prev_num) }}"><span
+                                            aria-hidden="true"></span>上一页</a>
+                                {% endif %}
                             </li>
                         {% else %}
                             <li class="previous disabled">
@@ -34,7 +48,13 @@
 
                         {% if pagination.has_next %}
                             <li class="next">
-                                <a href="{{ url_for("index",page=pagination.next_num) }}"><span aria-hidden="true"></span>下一页</a>
+                                {% if args["tag"] %}
+                                    <a href="{{ url_for("index",page=pagination.next_num,tag=args["tag"]) }}"><span
+                                            aria-hidden="true"></span>下一页</a>
+                                {% else %}
+                                    <a href="{{ url_for("index",page=pagination.next_num) }}"><span
+                                            aria-hidden="true"></span>下一页</a>
+                                {% endif %}
                             </li>
                         {% else %}
                             <li class="next disabled">
@@ -50,10 +70,18 @@
             <div class="list-group">
                 <li class="list-group-item list-group-item-info">标签</li>
                 {% for tag in tag_dict %}
-                <a class="list-group-item" href="{{ url_for("index", tag=tag_dict[tag][0]) }}"><span class="badge">{{ tag_dict[tag][1] }}</span>{{ tag }}</a>
+                    <a class="list-group-item {{ args["tag"] }} {{ tag_dict[tag][0] }}
+{% if args["tag"]==(tag_dict[tag][0]|string) %} active {% endif %}" href="{{ url_for("index", tag=tag_dict[tag][0]) }}"><span
+                            class="badge">{{ tag_dict[tag][1] }}</span>{{ tag }}</a>
                 {% endfor %}
             </div>
         </div>
 
     </div>
 {%- endblock content %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        document.querySelector("#nav-article").classList.add("active");
+    </script>
+{% endblock %}

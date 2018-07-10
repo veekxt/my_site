@@ -33,17 +33,23 @@ app.register_blueprint(auth_blueprint)
 
 @app.route("/utils")
 def utils():
-    tag = Tag.query.all()
-    for a in tag:
-        print(a.name)
-        tagmap = Tagmap.query.filter_by(tag_id=a.id).all()
-        print(len(tagmap))
-        for ar in tagmap:
-            print(ar.article)
-            print(ar.article.title)
+#    tag = Tag.query.all()
+#    for a in tag:
+#        print(a.name)
+#        tagmap = Tagmap.query.filter_by(tag_id=a.id).all()
+#        print(len(tagmap))
+#        for ar in tagmap:
+#            print(ar.article)
+#            print(ar.article.title)
 
     return render_template('utils.html')
 
+def get_tag_dict():
+    tag_dict = {}
+    tags = Tag.query.all()
+    for tag in tags:
+        tag_dict[tag.name] = (tag.id, len(tag.articles.all()))
+    return tag_dict
 
 @app.route('/')
 def index():
@@ -60,12 +66,7 @@ def index():
                                                                          per_page=app.config['POSTS_PER_PAGE'],
                                                                          error_out=True)
     articles = pagination.items
-    tag_dict = {}
-    tags = Tag.query.all()
-    for tag in tags:
-        tag_dict[tag.name] = (tag.id, len(tag.articles.all()))
-    return render_template('index.html', articles=articles, pagination=pagination, tag_dict=tag_dict)
-
+    return render_template('index.html', articles=articles, pagination=pagination, tag_dict=get_tag_dict(), args=request.args)
 
 @app.route('/up', methods=['GET', 'POST'])
 def my_upload():
@@ -137,7 +138,7 @@ def select_tags():
 
 @app.route("/article/<id>")
 def a_article(id):
-    return render_template("article.html", id=id)
+    return render_template("article.html", id=id, tag_dict=get_tag_dict())
 
 
 @app.route("/article_info/<id>")
@@ -151,6 +152,13 @@ def a_article_info(id):
     }
     return json.dumps(article_json)
 
+@app.route("/article/delete/<id>")
+def del_article(id):
+    article = Article.query.get(int(id))
+    db.session.delete(article)
+    db.session.commit()
+    flash("已删除一篇文章！")
+    return redirect(url_for("index"))
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8000, debug=True)

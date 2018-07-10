@@ -40,8 +40,8 @@
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav">
-                                    <li class="active"><a href="#">文章<span class="sr-only">(current)</span></a></li>
-                                    <li><a href="#">杂项</a></li>
+                                    <li id="nav-article"><a href="{{ url_for("index") }}">文章<span class="sr-only">(current)</span></a></li>
+                                    <li id="nav-utils"><a href="{{ url_for("utils") }}">杂项</a></li>
                                 </ul>
                                 <form class="navbar-form navbar-left">
                                     <div class="form-group">
@@ -59,7 +59,7 @@
                                                aria-expanded="false">{{ current_user.name }}<span class="caret"></span></a>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ url_for("write_article") }}">写文章</a></li>
-                                                <li><a href="#">文章管理</a></li>
+                                                <!--<li><a href="#">文章管理</a></li>-->
                                                 <!--<li><a href="#">个人信息</a></li>-->
                                                 <li><a href="{{ url_for("auth.user_quit") }}">退出登录</a></li>
                                             </ul>

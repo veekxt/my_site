@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content -%}
+    <!--suppress ALL -->
     <div class="row">
         <div class="col-md-9">
             <div class="panel panel-default">
@@ -8,6 +9,8 @@
                     <div style="display: none" id="id-article">{{ id }}</div>
                     <div id="ar_info" style="display: none">
                         <span id="author"></span> 发布于 <span id="time"></span>
+                        <button id="delete" numbery="0" type="button" class="btn btn-danger btn-sm xt-right">删除</button>
+                        <!--<button type="button" class="btn btn-info btn-sm xt-right">修改</button>-->
                     </div>
                     <hr/>
                 </div>
@@ -17,17 +20,19 @@
         <div class="col-md-3">
             <div class="list-group">
                 <li class="list-group-item list-group-item-info">标签</li>
-                <a class="list-group-item" href="#"><span class="badge">0</span>Java</a>
-                <a class="list-group-item" href="#"><span class="badge">21</span>Linux</a>
+                {% for tag in tag_dict %}
+                    <a class="list-group-item " href="{{ url_for("index", tag=tag_dict[tag][0]) }}"><span
+                            class="badge">{{ tag_dict[tag][1] }}</span>{{ tag }}</a>
+                {% endfor %}
             </div>
         </div>
-
     </div>
 {%- endblock content %}
 {% block scripts %}
     {{ super() }}
     <script src="/static/commonmark.min.js"></script>
     <script>
+        document.querySelector("#nav-article").classList.add("active");
         var xhr = new XMLHttpRequest();
         xhr.open("get", "/article_info/" + document.querySelector("#id-article").innerHTML);
         xhr.onreadystatechange = function () {
@@ -46,6 +51,25 @@
             }
         }
         xhr.send();
+        function get_article_id()
+　　{
+　　　　var url = document.location.toString();
+　　　　var arrUrl = url.split("/");
+　　　　var para = arrUrl[arrUrl.length-1];
+　　　　return para;
+　　}
+
+        let dom = document.querySelector("#delete");
+        dom.addEventListener("click", function () {
+            if (dom.getAttribute("numbery") == 0) {
+                dom.innerHTML = "再次点击确认删除";
+                dom.setAttribute("numbery", "1");
+            }
+            else {
+                window.location.href="delete/"+get_article_id();
+            }
+        })
+
     </script>
 {% endblock scripts %}
 

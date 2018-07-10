@@ -8,6 +8,12 @@
 .my-title{
 	font-size: 18px!important;
 }
+.xt-right{
+	float:right!important;
+}
+.xt-title{
+/*color :#d9edf7!important;*/
+}
 footer {
 	margin-top: 1em;
 	padding: 5px;

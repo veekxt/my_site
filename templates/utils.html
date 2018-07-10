@@ -2,8 +2,14 @@
 {% block content -%}
 
     <p>
-    utils test
+        utils test
     </p>
 
 
 {%- endblock content -%}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        document.querySelector("#nav-utils").classList.add("active");
+    </script>
+{% endblock %}
