@@ -35,7 +35,7 @@ app.jinja_env.globals.update(hgihtlight_word=hgihtlight_word)
 #def utils():
 #    tag = Tag.query.all()
 #    for a in tag:
-#        print(a.name)
+#        print(a.name)2
 #        tagmap = Tagmap.query.filter_by(tag_id=a.id).all()
 #        print(len(tagmap))
 #        for ar in tagmap:
@@ -50,6 +50,20 @@ def get_tag_dict():
     for tag in tags:
         tag_dict[tag.name] = (tag.id, len(tag.articles.all()))
     return tag_dict
+
+def root_required(func):
+    '''
+    装饰器，有些操作只有我能执行，验证current_user为管理员
+    '''
+    def access_is_0(*args, **kwargs):
+        if current_user.access == 0:
+            func(*args,**kwargs)
+        else:
+            # flash("You have no permission to access this page")
+            # TODO: diffrent call from diffrent path
+            return "ERROR PERMISSION"
+    return access_is_0
+
 
 @app.route('/')
 def index():
@@ -69,6 +83,7 @@ def index():
     return render_template('index.html', articles=articles, pagination=pagination, tag_dict=get_tag_dict(), args=request.args)
 
 @app.route('/up', methods=['GET', 'POST'])
+@root_required
 def my_upload():
     if request.method == "POST":
         f = request.files['inputfile']
@@ -154,6 +169,8 @@ def a_article_info(id):
 
 @app.route("/article/delete/<id>")
 def del_article(id):
+    if current_user.access != 0:
+        return "Cant access!"
     article = Article.query.get(int(id))
     db.session.delete(article)
     db.session.commit()
