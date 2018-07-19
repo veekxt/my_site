@@ -83,7 +83,6 @@ def index():
     return render_template('index.html', articles=articles, pagination=pagination, tag_dict=get_tag_dict(), args=request.args)
 
 @app.route('/up', methods=['GET', 'POST'])
-@root_required
 def my_upload():
     if request.method == "POST":
         f = request.files['inputfile']
