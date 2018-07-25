@@ -17,6 +17,11 @@
 .xt-matched{
 	background-color: rgba(123, 191, 81, 0.55);
 }
+
+blockquote{
+	font-size: 14px!important;
+}
+
 footer {
 	margin-top: 1em;
 	padding: 5px;

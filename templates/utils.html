@@ -20,7 +20,12 @@
                     {% endif %}
                 {% endwith %}
 
-                <div class="panel-heading"></div>
+                <div class="panel-heading text-center">
+
+                    {% block util_title %}
+                    {% endblock %}
+
+                </div>
                 <div class="panel-body">
                     {% block utilutil_id_main %}
                     {% endblock %}
