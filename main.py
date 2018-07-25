@@ -188,7 +188,7 @@ def search_article():
 
 @app.route("/utils")
 def utils_src():
-    return redirect(url_for("utils",wh="music"))
+    return redirect(url_for("utils",wh="tetris"))
 
 @app.route("/utils/<wh>")
 def utils(wh):
