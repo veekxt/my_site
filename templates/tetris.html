@@ -7,11 +7,12 @@
 {% block utilutil_id_main %}
 
 <!--
-veekxt@gmail.com 2018-07-25
+veekxt@gmail.com
 主要参考:
 https://www.cnblogs.com/jiangxiaobo/p/6110058.html
 http://tetris.wikia.com/wiki/Tetris_Guideline
 《算法的乐趣》，王晓华
+https://github.com/bingghost/SimpleTetris
 -->
 
 <button id="switch-ai" class="btn btn-default">点击切换( 当前:AI )</button>
@@ -30,7 +31,7 @@ http://tetris.wikia.com/wiki/Tetris_Guideline
     const info_width = 2 * square_size * 4;
     const info_font = "14px sans-serif";
     const info_next_pos = 32;
-    const info_t_x = 14;
+    const info_t_x = width_num+4;
     const info_t_y = 3;
     const tetromino_size = 4;
     var key = null;
@@ -734,6 +735,7 @@ http://tetris.wikia.com/wiki/Tetris_Guideline
                     occupy[key] = true;
                 }
             } else {
+                te_tmp.y--;
                 var moves = [];
                 moves.push(where(te_tmp));
                 var tprev = now_l.prev;
@@ -748,8 +750,6 @@ http://tetris.wikia.com/wiki/Tetris_Guideline
 
                 results.push({last: now_l, moves: moves});
             }
-            te_tmp.y--;
-
             head++;
         }
         return results
