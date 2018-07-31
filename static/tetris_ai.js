@@ -1,3 +1,12 @@
+/**
+ veekxt@gmail.com
+ 主要参考:
+ https://www.cnblogs.com/jiangxiaobo/p/6110058.html
+ http://tetris.wikia.com/wiki/Tetris_Guideline
+ 《算法的乐趣》，王晓华
+ https://github.com/bingghost/SimpleTetris
+ **/
+
 const square_size = 26;
 const grid_size = 1;
 const grid_fix = 0;
