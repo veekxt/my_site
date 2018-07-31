@@ -50,9 +50,5 @@
     {{ super() }}
     <script>
         document.querySelector("#{{ util_id }}").classList.add("active");
-        let maudio = document.querySelectorAll(".xt-audio");
-        for (a in maudio){
-            a.volume = 0.5
-        }
     </script>
 {% endblock %}

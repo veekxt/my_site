@@ -19,7 +19,8 @@
     <br/>
     明天会更好
     <br/>
-    <audio class="xt-audio" src="http://7xj4v0.com1.z0.glb.clouddn.com/%E7%BE%A4%E6%98%9F%20-%20%E6%98%8E%E5%A4%A9%E4%BC%9A%E6%9B%B4%E5%A5%BD.mp3"
+    <audio class="xt-audio"
+           src="http://7xj4v0.com1.z0.glb.clouddn.com/%E7%BE%A4%E6%98%9F%20-%20%E6%98%8E%E5%A4%A9%E4%BC%9A%E6%9B%B4%E5%A5%BD.mp3"
            controls="controls"></audio>
     <br/>
 {% endblock utilutil_id_main %}
@@ -27,10 +28,9 @@
 {% block scripts %}
     {{ super() }}
     <script>
-        let myaudio = document.querySelectorAll(".xt-audio");
-        for (a in maudio){
-            myaudio[a].volume = 0.4
+        let maudio = document.querySelectorAll(".xt-audio");
+        for (a in maudio) {
+            a.volume = 0.5
         }
     </script>
-
 {% endblock %}
