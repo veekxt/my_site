@@ -4,7 +4,10 @@
 {% endblock %}
 {% block utilutil_id_main %}
     <p>
-        My upload API
+        My Upload API
+    </p>
+    <p>
+        Visit List From <a href="//veekxt.com/upload/">Here</a>
     </p>
     <br/>
     <form action="" enctype='multipart/form-data' method='POST'>
@@ -46,7 +49,7 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         //document.querySelector("#upcallback").innerText = xhr.responseText;
-                        document.querySelector("#up_pro").style.width = 0 ;
+                        document.querySelector("#up_pro").style.width = 0;
                         document.querySelector("#warn").innerText = "  已完成: " + file.name;
                         document.querySelector("#up_warn").innerText = "";
                     }
@@ -57,7 +60,7 @@
                         var percent = event.loaded / event.total * 100;
                         percent = percent.toFixed(0);
                         document.querySelector("#up_pro").style.width = percent + "%";
-                        document.querySelector("#warn").innerText = "  进度 " + percent + "%, " + (event.loaded/1000000).toFixed(2)+"M/"+(event.total/1000000).toFixed(2)+"M";
+                        document.querySelector("#warn").innerText = "  进度 " + percent + "%, " + (event.loaded / 1000000).toFixed(2) + "M/" + (event.total / 1000000).toFixed(2) + "M";
                     }
                 }
                 //将formdata上传
