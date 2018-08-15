@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static", filename="vs.css") }}">
+{% endblock %}
 {% block content -%}
     <div class="panel panel-info">
         <div class="alert alert-warning" role="alert" id="warn" style="display:none;"></div>
@@ -46,6 +50,8 @@
             var parsed = reader.parse(input.value); // parsed is a 'Node' tree
             var result = writer.render(parsed); // result is a String
             preview.innerHTML = "<div class=\"panel-body\">" + result + "</div>";
+            hljs.initHighlighting.called = false;
+            hljs.initHighlighting();
         });
         document.querySelector("#edit_btn").addEventListener("click", function () {
             document.querySelector("#input_area").style.display = "";
@@ -132,4 +138,6 @@
             }
         });
     </script>
+    <script src="{{ url_for("static", filename="highlight.min.js") }}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
