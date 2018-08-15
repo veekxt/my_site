@@ -1,6 +1,7 @@
 
 #main_container {
     width:1200px;
+    line-height: 1.7!important;
 }
 textarea{
      font-family: "Consolas","Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace!important;
