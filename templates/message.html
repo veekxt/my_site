@@ -1,0 +1,52 @@
+{% extends 'utils.html' %}
+
+{% block util_title %}
+    消息共享
+{% endblock %}
+
+{% block utilutil_id_main %}
+
+    only veekxt can read, required login "veekxt"
+
+    <div class="input-group">
+        <input id="text_area" type="text" class="form-control" placeholder="">
+        <span class="input-group-btn">
+        <button id="add_mess" class="btn btn-default" type="button">添加(ADD)</button>
+      </span>
+    </div><!-- /input-group -->
+    <br />
+    <div id="messages">
+    </div>
+{% endblock utilutil_id_main %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        let messages = document.querySelector("#messages");
+        document.querySelector("#add_mess").addEventListener("click", function () {
+            let text_area = document.querySelector("#text_area");
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", "/add_mess");
+            let data = {"mess": text_area.value}
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    messages.insertAdjacentHTML("afterbegin", "<p>" + text_area.value + "</p>");
+                    text_area.value = "";
+                }
+            }
+            xhr.send(JSON.stringify(data));
+        })
+        ;
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", "/get_mess?n=" + 15);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let messList = JSON.parse(xhr.responseText);
+                for (let i in messList) {
+                    messages.insertAdjacentHTML("beforeend", "<p>" + messList[i] + "</p>");
+                }
+            }
+        }
+        xhr.send();
+
+    </script>
+{% endblock %}

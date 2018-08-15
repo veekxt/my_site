@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename, redirect
 import json
 from flask_login import current_user, login_required
 from my_utils import my_secure_filename, hgihtlight_word
-from data_model import db, Article, User, Tag
+from data_model import db, Article, User, Tag, Message
 from auth import login_manager
 import config_t
 from auth import auth as auth_blueprint
@@ -208,7 +208,39 @@ def utils_src():
 
 @app.route("/utils/<wh>")
 def utils(wh):
+    if wh == "message":
+        pass
     return render_template(wh + ".html", util_id=wh)
+
+
+@app.route("/add_mess", methods=['POST'])
+def add_mess():
+    mess_info = json.loads(str(request.get_data(), encoding="utf-8"))
+    mess = Message(
+        message=mess_info['mess'],
+        time=datetime.now()
+    )
+    if mess.message == "":
+        app.abort(500)
+        return
+    db.session.add(mess)
+    db.session.commit()
+    return "OK"
+
+
+@app.route("/get_mess")
+def get_mess():
+    if current_user.access != 0:
+        app.abort(500)
+    n = int(request.args.get("n"))
+    if n == None or n == 0:
+        n = 10
+    all = Message.query.order_by(desc(Message.id)).all()
+    rs = []
+    for i, j in enumerate(all):
+        if i > n: break
+        rs.append(j.message)
+    return json.dumps(rs)
 
 
 if __name__ == '__main__':

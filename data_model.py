@@ -54,3 +54,10 @@ class User(UserMixin, db.Model):
     create_at = db.Column(db.DateTime)
     password_hash = db.Column(db.Text)
     access = db.Column(db.Integer, server_default=db.FetchedValue())
+
+class Message(db.Model):
+    __tablename__ = 'message'
+
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text)
+    time = db.Column(db.DateTime)
