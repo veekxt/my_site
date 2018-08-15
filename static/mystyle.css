@@ -1,6 +1,16 @@
 
 #main_container {
-    width:1020px;
+    width:1200px;
+}
+textarea{
+     font-family: "Consolas","Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace!important;
+ }
+pre {
+    background-color: #fff!important;
+}
+body{
+    font-size: 15px!important;
+    font-family: "Consolas","Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace!important;
 }
 .xt-hidden{
 	display:none!important;
