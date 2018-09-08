@@ -14,7 +14,7 @@ from data_model import db, Article, User, Tag, Message
 from auth import login_manager
 import config_t
 from auth import auth as auth_blueprint
-import CommonMark
+import commonmark
 
 app = Flask(__name__)
 app.config.from_object(config_t)
@@ -153,9 +153,9 @@ def select_tags():
 def a_article(id):
     article = Article.query.get(int(id))
     if not article: app.abort(404)
-    parser = CommonMark.Parser()
+    parser = commonmark.Parser()
     ast = parser.parse(article.text)
-    renderer = CommonMark.HtmlRenderer()
+    renderer = commonmark.HtmlRenderer()
     html = renderer.render(ast)
 
     article_dict = {
