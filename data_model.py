@@ -61,3 +61,10 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.Text)
     time = db.Column(db.DateTime)
+
+class Link(db.Model):
+    __tablename__ = 'link'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text)
+    link = db.Column(db.Text)

@@ -1,0 +1,43 @@
+{% extends 'utils.html' %}
+
+{% block util_title %}
+    一些链接
+{% endblock %}
+
+{% block utilutil_id_main %}
+    <div class="list-group">
+        {% for link in links %}
+            <a title="{{ link.link }}" href="{{ link.link }}" class="list-group-item">{{ link.title }}</a>
+        {% endfor %}
+    </div>
+    <div class="input-group">
+        <input id="text_title" type="text" class="form-control" placeholder="标题">
+        <input id="text_addr" type="text" class="form-control" placeholder="地址">
+
+        <button id="add_link" class="btn btn-default" type="button">添加(ADD)</button>
+
+    </div><!-- /input-group -->
+    <br/>
+    <div id="messages">
+    </div>
+{% endblock utilutil_id_main %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        let messages = document.querySelector("#messages");
+        document.querySelector("#add_link").addEventListener("click", function () {
+            let title = document.querySelector("#text_title").value;
+            let addr = document.querySelector("#text_addr").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", "/add_links");
+            let data = {"title": title, "addr": addr}
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    location.reload();
+                }
+            }
+            xhr.send(JSON.stringify(data));
+        });
+
+    </script>
+{% endblock %}

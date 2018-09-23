@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename, redirect
 import json
 from flask_login import current_user, login_required
 from my_utils import my_secure_filename, hgihtlight_word
-from data_model import db, Article, User, Tag, Message
+from data_model import db, Article, User, Tag, Message, Link
 from auth import login_manager
 import config_t
 from auth import auth as auth_blueprint
@@ -136,6 +136,7 @@ def post_article():
         return "Unknown error!"
     return "OK"
 
+
 @app.route('/modify_article/<id>', methods=['POST'])
 @login_required
 def modify_article(id):
@@ -168,6 +169,7 @@ def modify_article(id):
         db.session.rollback()
         return "Unknown error!"
     return "OK"
+
 
 @app.route('/select_tags')
 def select_tags():
@@ -220,13 +222,15 @@ def del_article(id):
     flash("已删除一篇文章！")
     return redirect(url_for("index"))
 
+
 @app.route("/article/modify/<id>")
 @login_required
 def modify_articcle(id):
     if current_user.access != 0:
         return "Cant access!"
     article = Article.query.get(int(id))
-    return render_template('write_article.html',article=article)
+    return render_template('write_article.html', article=article)
+
 
 @app.route("/search")
 def search_article():
@@ -248,6 +252,9 @@ def utils_src():
 def utils(wh):
     if wh == "message":
         pass
+    elif wh == "links":
+        all = Link.query.all()
+        return render_template(wh + ".html", util_id=wh, links=all)
     return render_template(wh + ".html", util_id=wh)
 
 
@@ -262,6 +269,21 @@ def add_mess():
         app.abort(500)
         return
     db.session.add(mess)
+    db.session.commit()
+    return "OK"
+
+
+@app.route("/add_links", methods=['POST'])
+def add_links():
+    link_info = json.loads(str(request.get_data(), encoding="utf-8"))
+    link = Link(
+        title=link_info['title'],
+        link=link_info['addr']
+    )
+    if link.title == "" or link.link == "":
+        app.abort(500)
+        return
+    db.session.add(link)
     db.session.commit()
     return "OK"
 
