@@ -1,3 +1,4 @@
-# my_site
+
+My homepage, using Python(flask). **In development**
+
 https://veekxt.com
-My personal website, in python using Flask, **developing now**

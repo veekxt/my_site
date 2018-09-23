@@ -118,27 +118,56 @@ def post_article():
             return "Has No Title!"
         new_list = map(str.strip, article_info["tags"])
         db.session.add(article)
-        db.session.commit()
         for i in new_list:
             if len(i) == 0:
                 continue
             tag = Tag.query.filter_by(name=i).first()
             if tag:
                 tag.articles.append(article)
-                db.session.commit()
                 pass
             else:
                 new_tag = Tag(name=i)
                 db.session.add(new_tag)
-                db.session.commit()
                 new_tag.articles.append(article)
-                db.session.commit()
+        db.session.commit()
     except Exception as e:
         print(e)
         db.session.rollback()
         return "Unknown error!"
     return "OK"
 
+@app.route('/modify_article/<id>', methods=['POST'])
+@login_required
+def modify_article(id):
+    if current_user.access != 0:
+        # flash("当前用户没有修改文章！")
+        return "Cant access!"
+    try:
+        article = Article.query.get(int(id))
+        article_info = json.loads(str(request.get_data(), encoding="utf-8"))
+        article.text = article_info["main"]
+        article.title = article_info["title"]
+        if len(article_info["title"]) == 0:
+            return "Has No Title!"
+        # todo handle tags
+        # new_list = map(str.strip, article_info["tags"])
+        # for i in new_list:
+        #     if len(i) == 0:
+        #         continue
+        #     tag = Tag.query.filter_by(name=i).first()
+        #     if tag:
+        #         if not article in tag.articles:
+        #             tag.articles.append(article)
+        #     else:
+        #         new_tag = Tag(name=i)
+        #         db.session.add(new_tag)
+        #         new_tag.articles.append(article)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        return "Unknown error!"
+    return "OK"
 
 @app.route('/select_tags')
 def select_tags():
@@ -181,6 +210,7 @@ def a_article_info(id):
 
 
 @app.route("/article/delete/<id>")
+@login_required
 def del_article(id):
     if current_user.access != 0:
         return "Cant access!"
@@ -190,6 +220,13 @@ def del_article(id):
     flash("已删除一篇文章！")
     return redirect(url_for("index"))
 
+@app.route("/article/modify/<id>")
+@login_required
+def modify_articcle(id):
+    if current_user.access != 0:
+        return "Cant access!"
+    article = Article.query.get(int(id))
+    return render_template('write_article.html',article=article)
 
 @app.route("/search")
 def search_article():
