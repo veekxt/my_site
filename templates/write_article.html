@@ -50,8 +50,8 @@
     <script>
         var reader = new commonmark.Parser();
         var writer = new commonmark.HtmlRenderer();
+        let input = document.querySelector("#input_area");
         document.querySelector("#pre_btn").addEventListener("click", function () {
-            let input = document.querySelector("#input_area");
             input.style.display = "none";
             let preview = document.querySelector("#preview_area");
             preview.style.display = "";
@@ -62,7 +62,7 @@
             hljs.initHighlighting();
         });
         document.querySelector("#edit_btn").addEventListener("click", function () {
-            document.querySelector("#input_area").style.display = "";
+            input.style.display = "";
             let preview = document.querySelector("#preview_area");
             preview.style.display = "none";
         });
@@ -80,7 +80,7 @@
                 {% if not article %}
                     "tags": document.querySelector("#input_tag").value.split(","),
                 {% endif %}
-                "main": document.querySelector("#input_area").value
+                "main": input.value
             }
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -92,7 +92,9 @@
                         {% if not article %}
                             document.querySelector("#input_tag").value = "";
                         {% endif %}
-                        document.querySelector("#input_area").innerHTML = "";
+                        input.innerHTML = "";
+                        input.value = "";
+
                     } else {
                         warn.innerHTML = "发布失败，错误(" + xhr.responseText + ")";
                         warn.style.display = "";
