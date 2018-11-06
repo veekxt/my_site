@@ -47,3 +47,4 @@ footer small {
 	color: #aaa;
 	font-size: 12px
 }
+p { word-wrap:break-word; }
