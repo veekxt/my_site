@@ -1,0 +1,188 @@
+{% extends 'utils.html' %}
+
+{% block util_title %}
+    v2ray配置生成
+{% endblock %}
+
+{% block utilutil_id_main %}
+
+    <p>选择你需要的组合来生成 v2ray 配置文件（4.X版本）。不使用的配置项将被忽略。</p>
+    <p> 传输协议：
+        <select id="trans_proto">
+            <option selected>tcp</option>
+            <option value="1">mkcp</option>
+            <option value="2">websocket</option>
+            <option value="3">http2</option>
+        </select>&nbsp;&nbsp;
+        <select id="tls">
+            <option selected>tls: off</option>
+            <option value="1">tls: on</option>
+        </select></p>
+
+    <p>
+        数据协议：
+        <select id="data_proto">
+            <option selected>vmess</option>
+            <option value="1">shadowsocks</option>
+            <option value="2">socks</option>
+            <option value="3">http</option>
+            <option value="4">仅服务器：mtproto</option>
+        </select>
+    </p>
+    <br/>
+    <div>
+
+        本地代理入口：
+        <div id="list_in">
+            <p class="a_in">
+
+                <select id="route-1">
+                    <option selected>路由：默认</option>
+                    <option value="1">路由：CN直连</option>
+                </select>
+                <select id="in-1">
+                    <option selected>socks</option>
+                    <option value="1">http</option>
+                </select>
+                &nbsp;&nbsp; <input type="number" id="in-1" value="1080">
+                <button id="modify-1" type="button" class="btn btn-default btn-sm del_in">删除</button>
+            </p>
+            <p class="a_in">
+
+                <select id="route-2">
+                    <option selected>路由：默认</option>
+                    <option value="1">路由：CN直连</option>
+                </select>
+                <select id="in-2">
+                    <option selected value="1">http</option>
+                    <option value="0">socks</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;<input type="number" id="in-1" value="1081">
+                <button id="modify-2" type="button" class="btn btn-default btn-sm del_in">删除</button>
+            </p>
+        </div>
+        <p>
+            <button id="add_in" type="button" class="btn btn-default btn-sm">添加</button>
+        </p>
+        <br/>
+        <p>
+            服务器：<input type="text" id="server" value="">
+            端口：<input type="number" id="server_port" value="443">
+        </p>
+
+        <p>
+            反理软件： <select id="route-2">
+            <option selected>nginx</option>
+            <option value="1">caddy</option>
+        </select>
+        </p>
+        <p>
+            websocket / H2 - PATH：<input type="text" id="server_port" value="/ws_path">
+        </p>
+        <p>
+            TLS域名：<input type="text" id="server_port" value="veekxt.com">
+        </p>
+
+        <p>
+            TLS证书路径：<input type="text" id="server_port" value="veekxt.com">
+        </p>
+
+        <p>
+            TLS证书密钥路径：<input type="text" id="server_port" value="veekxt.com">
+        </p>
+        <br/>
+        <button id="gen_code" type="button" class="btn btn-default ">生成</button>
+        <button id="tar_code" type="button" class="btn btn-default ">打包&下载</button>
+    </div>
+    <br/>
+    <div>
+        客户端配置（config_client.json）：<textarea id="client" class="form-control" rows="10" placeholder=""
+    ></textarea>
+        服务器配置（config_server.json）：<textarea id="server" class="form-control" rows="10" placeholder=""
+    ></textarea>
+        反代服务器配置（Caddyfile or nginx.conf）：<textarea id="re_server" class="form-control" rows="10" placeholder=""
+    ></textarea>
+    </div>
+{% endblock utilutil_id_main %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        let list_in = document.querySelector("#list_in");
+        let client_code = document.querySelector("#client");
+        let server_code = document.querySelector("#server");
+        let re_server_code = document.querySelector("#re_server");
+
+        function clear() {
+            client_code.value = "";
+            server_code.value = "";
+            re_server_code.value = "";
+        }
+
+        clear();
+        listen_add();
+
+        function add_in() {
+            list_in.insertAdjacentHTML("beforeend", "            <p class=\"a_in\">\n" +
+                "\n" +
+                "                <select id=\"route-2\">\n" +
+                "                    <option selected>路由：默认</option>\n" +
+                "                    <option value=\"1\">路由：CN直连</option>\n" +
+                "                </select>\n" +
+                "                <select id=\"in-2\">\n" +
+                "                    <option selected value=\"0\">socks</option>\n" +
+                "                    <option value=\"1\">http</option>\n" +
+                "                </select>\n" +
+                "                &nbsp;&nbsp;&nbsp;<input type=\"number\" id=\"in-1\"\">\n" +
+                "                <button id=\"modify-2\" type=\"button\" class=\"btn btn-default btn-sm del_in\">删除</button>\n" +
+                "            </p>");
+        }
+
+        document.querySelector("#gen_code").addEventListener("click", function () {
+            clear();
+        });
+        document.querySelector("#add_in").addEventListener("click", function () {
+            add_in();
+            listen_add();
+        });
+
+        function listen_add() {
+            let all_del = document.querySelectorAll(".del_in");
+            all_del.forEach(function (i) {
+                i.addEventListener("click", function () {
+                    let s = i.parentNode;
+                    s.parentNode.removeChild(s);
+                });
+            });
+        }
+
+
+        let messages = document.querySelector("#messages");
+
+        document.querySelector("#add_mess").addEventListener("click", function () {
+            let text_area = document.querySelector("#text_area");
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", "/add_mess");
+            let data = {"mess": text_area.value}
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    messages.insertAdjacentHTML("afterbegin", "<p>" + text_area.value + "</p>");
+                    text_area.value = "";
+                }
+            }
+            xhr.send(JSON.stringify(data));
+        })
+        ;
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", "/get_mess?n=" + 15);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let messList = JSON.parse(xhr.responseText);
+                for (let i in messList) {
+                    messages.insertAdjacentHTML("beforeend", "<p>" + messList[i] + "</p>");
+                }
+            }
+        }
+        xhr.send();
+
+    </script>
+{% endblock %}
