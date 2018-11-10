@@ -109,7 +109,7 @@ def get_v2ray_config(config_from):
     data_ps = data_protocol[config_from["data_protocol"]]
 
     vmess_uuid = str(uuid.uuid4())
-    ss_passwd = ''.join(random.choices(string.ascii_letters, k=16)).lower()
+    ss_passwd= ''.join(random.sample(string.ascii_letters, 16)).lower()
 
     if data_ps == "vmess":
         out_set["vnext"] = [
