@@ -14,7 +14,7 @@
         <button id="add_mess" class="btn btn-default" type="button">添加(ADD)</button>
       </span>
     </div><!-- /input-group -->
-    <br />
+    <br/>
     <div id="messages">
     </div>
 {% endblock utilutil_id_main %}
@@ -26,26 +26,26 @@
             let text_area = document.querySelector("#text_area");
             var xhr = new XMLHttpRequest();
             xhr.open("post", "/add_mess");
-            let data = {"mess": text_area.value}
+            let data = {"mess": text_area.value};
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                     messages.insertAdjacentHTML("afterbegin", "<p>" + text_area.value + "</p>");
                     text_area.value = "";
                 }
-            }
+            };
             xhr.send(JSON.stringify(data));
         })
         ;
         var xhr = new XMLHttpRequest();
         xhr.open("get", "/get_mess?n=" + 15);
         xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 let messList = JSON.parse(xhr.responseText);
                 for (let i in messList) {
                     messages.insertAdjacentHTML("beforeend", "<p>" + messList[i] + "</p>");
                 }
             }
-        }
+        };
         xhr.send();
 
     </script>

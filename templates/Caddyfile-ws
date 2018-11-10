@@ -1,0 +1,8 @@
+{{ domain }} {
+    root /var/www/
+    {{ tls }}
+    proxy {{ path }} {{ be_proxy }} {
+        websocket
+        header_upstream -Origin
+    }
+}

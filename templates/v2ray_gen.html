@@ -6,27 +6,27 @@
 
 {% block utilutil_id_main %}
 
-    <p>选择你需要的组合来生成 v2ray 配置文件（4.X版本）。不使用的配置项将被忽略。</p>
+    <p>选择你需要的组合来生成 v2ray 配置文件（4.X版本）。不使用的配置项将被忽略（不填或者填入任意值）。</p>
+    <br />
     <p> 传输协议：
-        <select id="trans_proto">
+        <select autocomplete="off" id="trans_proto">
             <option selected>tcp</option>
             <option value="1">mkcp</option>
             <option value="2">websocket</option>
             <option value="3">http2</option>
         </select>&nbsp;&nbsp;
-        <select id="tls">
+        <select autocomplete="off" id="tls">
             <option selected>tls: off</option>
             <option value="1">tls: on</option>
         </select></p>
 
     <p>
         数据协议：
-        <select id="data_proto">
+        <select autocomplete="off" id="data_proto">
             <option selected>vmess</option>
             <option value="1">shadowsocks</option>
             <option value="2">socks</option>
-            <option value="3">http</option>
-            <option value="4">仅服务器：mtproto</option>
+            <option value="3">仅服务器：mtproto</option>
         </select>
     </p>
     <br/>
@@ -36,28 +36,28 @@
         <div id="list_in">
             <p class="a_in">
 
-                <select id="route-1">
+                <select autocomplete="off" class="in-v-r">
                     <option selected>路由：默认</option>
                     <option value="1">路由：CN直连</option>
                 </select>
-                <select id="in-1">
+                <select autocomplete="off" class="in-v-t">
                     <option selected>socks</option>
                     <option value="1">http</option>
                 </select>
-                &nbsp;&nbsp; <input type="number" id="in-1" value="1080">
-                <button id="modify-1" type="button" class="btn btn-default btn-sm del_in">删除</button>
+                &nbsp;&nbsp; <input type="number" value="1080" class="in-v-p">
+                <button type="button" class="btn btn-default btn-sm del_in">删除</button>
             </p>
             <p class="a_in">
 
-                <select id="route-2">
+                <select autocomplete="off" id="route-2" class="in-v-r">
                     <option selected>路由：默认</option>
                     <option value="1">路由：CN直连</option>
                 </select>
-                <select id="in-2">
-                    <option selected value="1">http</option>
+                <select autocomplete="off" class="in-v-t">
                     <option value="0">socks</option>
+                    <option selected value="1">http</option>
                 </select>
-                &nbsp;&nbsp;&nbsp;<input type="number" id="in-1" value="1081">
+                &nbsp;&nbsp;&nbsp;<input type="number" value="1081" class="in-v-p">
                 <button id="modify-2" type="button" class="btn btn-default btn-sm del_in">删除</button>
             </p>
         </div>
@@ -67,40 +67,41 @@
         <br/>
         <p>
             服务器：<input type="text" id="server" value="">
-            端口：<input type="number" id="server_port" value="443">
+            端口：<input type="number" id="server_port" value="3333">
         </p>
 
         <p>
-            反理软件： <select id="route-2">
-            <option selected>nginx</option>
+            反理软件： <select autocomplete="off" id="reversed">
+            <option selected>not use</option>
+            <option value="2">nginx</option>
             <option value="1">caddy</option>
         </select>
         </p>
         <p>
-            websocket / H2 - PATH：<input type="text" id="server_port" value="/ws_path">
+            websocket / H2 - PATH：<input type="text" id="ws_path" value="/veekxt_websocket_test">
         </p>
         <p>
-            TLS域名：<input type="text" id="server_port" value="">
-        </p>
-
-        <p>
-            TLS证书路径：<input type="text" id="server_port" value="">
+            TLS域名：<input style="width:300px" type="text" id="server_tls" value="">
         </p>
 
         <p>
-            TLS证书密钥路径：<input type="text" id="server_port" value="">
+            TLS证书路径：<input style="width:400px" type="text" id="tls_file" value="">
+        </p>
+
+        <p>
+            TLS证书密钥路径：<input style="width:400px" type="text" id="tls_key" value="">
         </p>
         <br/>
         <button id="gen_code" type="button" class="btn btn-default ">生成</button>
-        <button id="tar_code" type="button" class="btn btn-default ">打包&下载</button>
+        <!--button id="tar_code" type="button" class="btn btn-default ">打包&下载</button><-->
     </div>
     <br/>
     <div>
-        客户端配置（config_client.json）：<textarea id="client" class="form-control" rows="10" placeholder=""
+        客户端配置（config_client.json）：<textarea id="client_conf" class="form-control" rows="10" placeholder=""
     ></textarea>
-        服务器配置（config_server.json）：<textarea id="server" class="form-control" rows="10" placeholder=""
+        服务器配置（config_server.json）：<textarea id="server_conf" class="form-control" rows="10" placeholder=""
     ></textarea>
-        反代服务器配置（Caddyfile or nginx.conf）：<textarea id="re_server" class="form-control" rows="10" placeholder=""
+        反代服务器配置（Caddyfile or nginx.conf）：<textarea id="re_server_conf" class="form-control" rows="10" placeholder=""
     ></textarea>
     </div>
 {% endblock utilutil_id_main %}
@@ -108,9 +109,9 @@
     {{ super() }}
     <script>
         let list_in = document.querySelector("#list_in");
-        let client_code = document.querySelector("#client");
-        let server_code = document.querySelector("#server");
-        let re_server_code = document.querySelector("#re_server");
+        let client_code = document.querySelector("#client_conf");
+        let server_code = document.querySelector("#server_conf");
+        let re_server_code = document.querySelector("#re_server_conf");
 
         function clear() {
             client_code.value = "";
@@ -124,16 +125,16 @@
         function add_in() {
             list_in.insertAdjacentHTML("beforeend", "            <p class=\"a_in\">\n" +
                 "\n" +
-                "                <select id=\"route-2\">\n" +
+                "                <select autocomplete=\"off\" class=\"in-v-r\">\n" +
                 "                    <option selected>路由：默认</option>\n" +
                 "                    <option value=\"1\">路由：CN直连</option>\n" +
                 "                </select>\n" +
-                "                <select id=\"in-2\">\n" +
-                "                    <option selected value=\"0\">socks</option>\n" +
+                "                <select autocomplete=\"off\" class=\"in-v-t\">\n" +
+                "                    <option selected>socks</option>\n" +
                 "                    <option value=\"1\">http</option>\n" +
                 "                </select>\n" +
-                "                &nbsp;&nbsp;&nbsp;<input type=\"number\" id=\"in-1\"\">\n" +
-                "                <button id=\"modify-2\" type=\"button\" class=\"btn btn-default btn-sm del_in\">删除</button>\n" +
+                "                &nbsp;&nbsp; <input type=\"number\" class=\"in-v-p\">\n" +
+                "                <button type=\"button\" class=\"btn btn-default btn-sm del_in\">删除</button>\n" +
                 "            </p>");
         }
 
@@ -155,34 +156,70 @@
             });
         }
 
-
         let messages = document.querySelector("#messages");
 
-        document.querySelector("#add_mess").addEventListener("click", function () {
-            let text_area = document.querySelector("#text_area");
+        document.querySelector("#gen_code").addEventListener("click", function () {
+            let data = {
+                "trans_protocol": document.querySelector("#trans_proto").selectedIndex,
+                "tls": document.querySelector("#tls").selectedIndex,
+                "data_protocol": document.querySelector("#data_proto").selectedIndex,
+                "in": [],
+                "server": document.querySelector("#server").value,
+                "tls_server": document.querySelector("#server_tls").value,
+                "server_port": document.querySelector("#server_port").value,
+                "reversed_proxy": document.querySelector("#reversed").selectedIndex,
+                "ws_path": document.querySelector("#ws_path").value,
+                "tls_file": document.querySelector("#tls_file").value,
+                "tls_key": document.querySelector("#tls_key").value
+
+            };
+
+            list_in.childNodes.forEach(function (i) {
+                if (i.localName == "p" && i.getAttribute('class') === "a_in") {
+                    console.log(i)
+                    in_info = i.childNodes;
+
+                    let route;
+                    let type;
+                    let port;
+
+                    in_info.forEach(function (j) {
+                        if (j.localName === "select") {
+                            console.log("get one")
+                            if (j.getAttribute('class') === "in-v-r") {
+                                route = j.selectedIndex;
+                                console.log("get one")
+                            }
+                            else if (j.getAttribute('class') === "in-v-t") {
+                                type = j.selectedIndex;
+                            }
+                        } else if (j.localName === "input" && j.getAttribute('class') === "in-v-p") {
+                            port = j.value;
+                        }
+                    })
+                    if(route !== null)
+                        data["in"].push({"route": route, "type": type, "port": port});
+                }
+            });
+
             var xhr = new XMLHttpRequest();
-            xhr.open("post", "/add_mess");
-            let data = {"mess": text_area.value}
+            xhr.open("post", "/gen_v2ray_config");
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    messages.insertAdjacentHTML("afterbegin", "<p>" + text_area.value + "</p>");
-                    text_area.value = "";
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        let rs = JSON.parse(xhr.responseText);
+                        client_code.value = rs["c"]
+                        server_code.value = rs["s"]
+                        re_server_code.value = rs["r"]
+                    } else {
+                        client_code.value = "服务器内部错误:" + xhr.status + "  如果你确定选项无误, 请到github上反馈！"
+                        server_code.value = ""
+                        re_server_code.value = ""
+                    }
                 }
-            }
+            };
             xhr.send(JSON.stringify(data));
-        })
-        ;
-        var xhr = new XMLHttpRequest();
-        xhr.open("get", "/get_mess?n=" + 15);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                let messList = JSON.parse(xhr.responseText);
-                for (let i in messList) {
-                    messages.insertAdjacentHTML("beforeend", "<p>" + messList[i] + "</p>");
-                }
-            }
-        }
-        xhr.send();
+        });
 
     </script>
 {% endblock %}

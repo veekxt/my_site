@@ -1,0 +1,10 @@
+{{ domain }} {
+    tls veekxt@gmail.com
+    root /var/www/
+
+    proxy {{ path }} {{ be_proxy }}  {
+        header_upstream Host {{ host_domain }}
+        header_upstream X-Forwarded-Proto "https"
+        insecure_skip_verify
+    }
+}

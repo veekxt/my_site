@@ -15,6 +15,7 @@ from auth import login_manager
 import config_t
 from auth import auth as auth_blueprint
 import commonmark
+import v2ray_config
 
 app = Flask(__name__)
 app.config.from_object(config_t)
@@ -301,6 +302,39 @@ def get_mess():
         if i > n: break
         rs.append(j.message)
     return json.dumps(rs)
+
+
+@app.route("/gen_v2ray_config", methods=['POST'])
+def gen_v2ray_config():
+    v_info = json.loads(str(request.get_data(), encoding="utf-8"))
+    rs = v2ray_config.get_v2ray_config(v_info)
+    (use_c, use_s, use_re, conf_c, conf_s, data_re) = rs
+    conf_r = ""
+    if data_re[0] == 1:
+        conf_r = render_template("nginx.conf", port=data_re[1], server_name=data_re[2], path=data_re[3],
+                                 be_proxy=data_re[4],tls_config=data_re[5],ssl=data_re[6])
+    elif data_re[0] == 2:
+        conf_r = render_template("Caddyfile-ws", domain=data_re[1], tls=data_re[2], path=data_re[3],
+                                 be_proxy=data_re[4])
+    elif data_re[0] == 3:
+        conf_r = render_template("Caddyfile-h2", domain=data_re[1], path=data_re[2], be_proxy=data_re[3],
+                                 host_domain=data_re[4])
+    else:
+        use_re = False
+
+    if not use_c:
+        conf_c = "N/A"
+    if not use_s:
+        conf_s = "N/A"
+    if not use_re:
+        conf_r = "N/A"
+
+    config = {
+        "c": conf_c,
+        "s": conf_s,
+        "r": conf_r
+    }
+    return json.dumps(config)
 
 
 if __name__ == '__main__':
