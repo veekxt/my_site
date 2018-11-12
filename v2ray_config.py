@@ -162,7 +162,7 @@ def get_v2ray_config(config_from):
         }
     if config_from["tls"] == 1:
         stream["tlsSettings"] = {
-            "serverName": config_from["tls_server"],
+            "serverName": server_name,
         }
 
     outbounds.append(outbound)
