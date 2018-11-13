@@ -275,6 +275,7 @@ def add_mess():
 
 
 @app.route("/add_links", methods=['POST'])
+@login_required
 def add_links():
     link_info = json.loads(str(request.get_data(), encoding="utf-8"))
     link = Link(
