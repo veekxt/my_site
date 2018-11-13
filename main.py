@@ -26,6 +26,11 @@ app.register_blueprint(auth_blueprint)
 app.jinja_env.globals.update(hgihtlight_word=hgihtlight_word)
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404
+
 # @app.route("/utils")
 # def utils():
 #    tag = Tag.query.all()
