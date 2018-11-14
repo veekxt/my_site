@@ -10,7 +10,7 @@
                 {% endif %}
             {% endwith %}
 
-            <div class="panel panel-info">
+            <div class="card ">
 
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
@@ -20,13 +20,13 @@
                     {% endif %}
                 {% endwith %}
 
-                <div class="panel-heading text-center">
+                <div class="card-header text-center">
 
                     {% block util_title %}
                     {% endblock %}
 
                 </div>
-                <div class="panel-body">
+                <div class="card-body xt_main_text">
                     {% block utilutil_id_main %}
                     {% endblock %}
                 </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="col-sm-3">
             <div class="list-group">
-                <li class="list-group-item list-group-item-info">杂项</li>
+                <li class="list-group-item bg-light">杂项</li>
                 <a class="list-group-item" id="up" href="/utils/up">文件上传</a>
                 <a class="list-group-item" id="music" href="/utils/music">一些音乐</a>
                 <a class="list-group-item" id="tetris" href="/utils/tetris">俄罗斯方块(AI)</a>
@@ -53,5 +53,6 @@
     {{ super() }}
     <script>
         document.querySelector("#{{ util_id }}").classList.add("active");
+        document.querySelector("#nav-utils").classList.add("active");
     </script>
 {% endblock %}

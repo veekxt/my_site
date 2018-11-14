@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content -%}
     <div class="row">
-        <div class="col-sm-9" >
+        <div class="col-sm-9">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
@@ -25,28 +25,81 @@
 
             </div>
 
-        <span class="justify-content-center">
-            <button type="button" class="btn btn-outline-info float-left">Success</button>
-
-<form class="form-inline float-none" id="page_input" action="/">
-                        <span class="form-group"  style="display:inline;">
-                            <label for="exampleInputEmail2"></label>
-                            <input class="form-control" name="page"
-                                   placeholder="第{{ pagination.page }}页，共{{ pagination.pages }}页">
-                        </span>
+            <div class="row ">
+                <div class="col-sm-4">
+                    <div class="d-flex justify-content-around">
 
 
-<button type="submit" class="btn btn-default">跳页</button>
-</form>
-<button type="button" class="btn btn-outline-info float-right">Success</button>
+                        {% if pagination.has_prev %}
+                            {% if args["tag"] %}
+
+                                <a class="btn btn-outline-info float-left" role="button"
+                                   href="{{ url_for("index",page=pagination.prev_num,tag=args["tag"]) }}"><span
+                                        aria-hidden="true"></span>上一页</a>
+
+                            {% else %}
+                                <a class="btn btn-outline-info float-left" role="button"
+                                   href="{{ url_for("index",page=pagination.prev_num) }}"><span
+                                        aria-hidden="true"></span>上一页</a>
+                            {% endif %}
+                        {% else %}
+
+                            <a class="btn btn-outline-info float-left" role="button" href="#"><span
+                                    aria-hidden="true"></span>上一页</a>
+
+                        {% endif %}
 
 
-</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="d-flex justify-content-around">
 
+
+
+                            <input id="page_code" type="number" class="form-control"
+                                   placeholder="第{{ pagination.page }}页，共{{ pagination.pages }}页"
+                                   aria-label="" aria-describedby="button-addon2">
+
+
+                        <span>
+                                <button class="btn btn-outline-secondary" type="submit" id="goto-page">跳页</button>
+                            </span>
+
+
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="d-flex justify-content-around">
+
+                        {% if pagination.has_next %}
+
+                            {% if args["tag"] %}
+                                <a class="btn btn-outline-info float-left" role="button"
+                                   href="{{ url_for("index",page=pagination.next_num,tag=args["tag"]) }}"><span
+                                        aria-hidden="true"></span>下一页</a>
+                            {% else %}
+                                <a class="btn btn-outline-info float-left" role="button"
+                                   href="{{ url_for("index",page=pagination.next_num) }}"><span
+                                        aria-hidden="true"></span>下一页</a>
+                            {% endif %}
+
+                        {% else %}
+
+                            <a class="btn btn-outline-info float-left" role="button" href="#"><span
+                                    aria-hidden="true"></span>下一页</a>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="col-sm-3">
             <div class="list-group">
-                <li class="list-group-item list-group-item-info">标签</li>
+                <li class="list-group-item bg-light">标签</li>
                 {% for tag in tag_dict %}
                     <a class="list-group-item list-group-item-action {{ args["tag"] }} {{ tag_dict[tag][0] }}
 {% if args["tag"]==(tag_dict[tag][0]|string) %} active {% endif %}"
@@ -62,5 +115,9 @@
     {{ super() }}
     <script>
         document.querySelector("#nav-article").classList.add("active");
+        document.querySelector("#goto-page").addEventListener("click",function () {
+            page= document.querySelector("#page_code").value;
+            window.location.href = "/?page=" + page;
+        });
     </script>
 {% endblock %}

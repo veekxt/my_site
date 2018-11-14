@@ -7,11 +7,12 @@
     <!--suppress ALL -->
     <div class="row">
         <div class="col-sm-9">
-            <div class="panel panel-default">
-                <div class="panel-heading my-title" id="article_title">{{ article_dict["title"] }}</div>
-                <div class="panel-body" id="main_article">
+            <div class="card">
+                <div class="card-header my-title" id="article_title">{{ article_dict["title"] }}</div>
+                <div class="card-body" id="main_article xt_main_text">
 
                     <div id="ar_info">
+                    <small>
                         <span id="author">{{ article_dict["author"] }}</span> 发布于 <span
                             id="time">{{ article_dict["time"] }}</span>
                         {% if current_user.is_authenticated and current_user.access==0 %}
@@ -20,6 +21,7 @@
                             <button id="modify" type="button" class="btn btn-default btn-sm xt-right">修改</button>
                             <!--<button type="button" class="btn btn-info btn-sm xt-right">修改</button>-->
                         {% endif %}
+                    </small>
                     </div>
 
                     <hr/>
@@ -30,7 +32,7 @@
         </div>
         <div class="col-sm-3">
             <div class="list-group">
-                <li class="list-group-item list-group-item-info">标签</li>
+                <li class="list-group-item bg-light">标签</li>
                 {% for tag in tag_dict %}
                     <a class="list-group-item list-group-item-action"
                        href="{{ url_for("index", tag=tag_dict[tag][0]) }}">{{ tag }}<span

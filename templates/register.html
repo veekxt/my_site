@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content -%}
 
-    <div class="panel panel-info">
+    <div class="card">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -9,8 +9,8 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        <div class="panel-heading">请输入用户信息</div>
-        <div class="panel-body">
+        <div class="card-header">请输入用户信息</div>
+        <div class="card-body">
             <form class="form-horizontal" method="POST">
                 {{ form.hidden_tag() }}
                 <div class="form-group">

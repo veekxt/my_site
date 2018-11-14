@@ -4,14 +4,14 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="vs.css") }}">
 {% endblock %}
 {% block content -%}
-    <div class="panel panel-info">
+    <div class="card">
         <div class="alert alert-warning" role="alert" id="warn" style="display:none;"></div>
         {% if not article %}
-            <div class="panel-heading">新建文章</div>
+            <div class="card-header">新建文章</div>
         {% else %}
-            <div class="panel-heading">修改文章</div>
+            <div class="card-header">修改文章</div>
         {% endif %}
-        <div class="panel-body">
+        <div class="card-body">
             <div class="input-group">
                 <span class="input-group-addon">标题</span>
                 <input id="a_title" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1"
@@ -34,8 +34,8 @@
 
                 <textarea id="input_area" class="form-control" rows="20" placeholder="这里输入正文(markdown)"
                 >{% if article %}{{ article.text }}{% endif %}</textarea>
-                <div class="panel panel-info" id="preview_area" style="display:none;">
-                    <div class="panel-body">
+                <div class="card" id="preview_area" style="display:none;">
+                    <div class="card-body">
                     </div>
                 </div>
             </nav>
@@ -57,7 +57,7 @@
             preview.style.display = "";
             var parsed = reader.parse(input.value); // parsed is a 'Node' tree
             var result = writer.render(parsed); // result is a String
-            preview.innerHTML = "<div class=\"panel-body\">" + result + "</div>";
+            preview.innerHTML = "<div class=\"card-body\">" + result + "</div>";
             hljs.initHighlighting.called = false;
             hljs.initHighlighting();
         });
