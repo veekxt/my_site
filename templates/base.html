@@ -26,12 +26,12 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <a class="navbar-brand" href="{{ url_for('index') }}">{{ config.BLOG_NAME }}</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            data-target="#nav-other" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="collapse navbar-collapse">
+                    <div class="collapse navbar-collapse" id="nav-other">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item" id="nav-article">
                                 <a class="nav-link" href="{{ url_for("index") }}">文章 <span
@@ -40,15 +40,15 @@
                             <li class="nav-item" id="nav-utils">
                                 <a class="nav-link" href="{{ url_for("utils_src") }}">杂项</a>
                             </li>
-                            <form action="/search" class="form-inline my-2 my-lg-0" method="get">
-                                <input name="keyword" type="search" class="form-control mr-sm-2"
-                                       placeholder="Search">
-                                <button type="submit" class="btn btn-outline-success my-2 my-sm-0">搜索</button>
-                            </form>
-
+                            <li class="nav-item">
+                                <form action="/search" class="form-inline my-2 my-lg-0" method="get">
+                                    <input name="keyword" type="search" class="form-control mr-sm-2"
+                                           placeholder="Search">
+                                    <button type="submit" class="btn btn-outline-success my-2 my-sm-0">搜索</button>
+                                </form>
+                            </li>
                         </ul>
-
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav mr-auto">
                             {% if current_user.is_authenticated %}
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -69,14 +69,12 @@
                                                         href="{{ url_for("auth.user_register") }}">注册</a></li>
                             {% endif %}
                         </ul>
-
                     </div>
-
                 </nav>
             {%- endblock navbar %}
 
-            {% block content -%}
-            {%- endblock content %}
+        {% block content -%}
+        {%- endblock content %}
 
 
         {% block footer %}

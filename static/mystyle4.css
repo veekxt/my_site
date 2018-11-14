@@ -1,6 +1,7 @@
 
 #main_container {
-    width: 70%;
+    /*width: 70%;*/
+    max-width:1150px;
 }
 
 #main_article, textarea {
