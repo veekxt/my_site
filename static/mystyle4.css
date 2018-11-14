@@ -1,45 +1,65 @@
 
-
 #main_container {
-    width:70%;
-}
-#main_article, textarea{
-    font-family: Consolas,Arial,'Microsoft YaHei',"Droid sans mono",monospace!important;
+    width: 70%;
 }
 
-#page_input{
-	display: inline;
+#main_article, textarea {
+    font-family: Consolas, Arial, 'Microsoft YaHei', "Droid sans mono", monospace !important;
 }
 
-#list_article{
-	margin-bottom: 16px;
+#page_input {
+    display: inline;
 }
 
-.xt_main_text{
-	padding: 16px 16px;
+#list_article {
+    margin-bottom: 16px;
 }
 
-nav{
-	margin-bottom: 22px;
+.xt_main_text {
+    padding: 16px 16px;
+}
+
+nav {
+    margin-bottom: 22px;
 }
 
 pre {
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 5px;
-	border-color: #00b0e8;
-	padding: 7px 16px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: #00b0e8;
+    padding: 7px 16px;
 }
 
 footer {
-	margin-top: 1em;
-	padding: 5px;
-	bottom: 2px;
-	clear: both;
-	display: block;
-	width: 100%;
-	border-top: 1px dashed #ccc;
-	text-align: center
+    margin-top: 1em;
+    padding: 5px;
+    bottom: 2px;
+    clear: both;
+    display: block;
+    width: 100%;
+    border-top: 1px dashed #ccc;
+    text-align: center
 }
 
-p { word-wrap:break-word; }
+p {
+    word-wrap: break-word;
+}
+
+.xt-matched {
+    background-color: rgba(123, 191, 81, 0.55);
+}
+
+.xt-hidden {
+    display: none !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    border-left-color: #E4F9DF;
+    border-left-style: solid;
+    border-left-width: 10px;
+    background-color: #F8F8F8;
+    padding: 5px 0px 7px 10px;
+    color: #0b6d88 !important;
+    border-radius: 3px;
+}
