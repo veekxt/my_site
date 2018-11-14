@@ -1,0 +1,41 @@
+
+
+#main_container {
+    width:70%;
+}
+#main_article, textarea{
+    font-family: Consolas,Arial,'Microsoft YaHei',"Droid sans mono",monospace!important;
+}
+
+#page_input{
+	display: inline;
+}
+
+#list_article{
+	margin-bottom: 16px;
+}
+
+nav{
+	margin-bottom: 22px;
+}
+
+pre {
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 5px;
+	border-color: #00b0e8;
+	padding: 7px 16px;
+}
+
+footer {
+	margin-top: 1em;
+	padding: 5px;
+	bottom: 2px;
+	clear: both;
+	display: block;
+	width: 100%;
+	border-top: 1px dashed #ccc;
+	text-align: center
+}
+
+p { word-wrap:break-word; }

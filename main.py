@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 
 from flask import Flask, request, render_template, url_for, flash, Blueprint
-from flask_bootstrap import Bootstrap
 from sqlalchemy import desc
 from werkzeug.utils import secure_filename, redirect
 import json
@@ -19,7 +18,6 @@ import v2ray_config
 
 app = Flask(__name__)
 app.config.from_object(config_t)
-bootstrap = Bootstrap(app)
 db.init_app(app)
 login_manager.init_app(app)
 app.register_blueprint(auth_blueprint)

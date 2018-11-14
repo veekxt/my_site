@@ -7,90 +7,94 @@
                 <title>{% block title %}VeekXT{% endblock title %}</title>
 
                 {%- block metas %}
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
                     <meta charset="utf-8">
                 {%- endblock metas %}
                 <link href="{{ url_for("static",filename="favicon.ico") }}" rel="shortcut icon">
                 {%- block styles %}
                     <!-- My style -->
-                    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+                    <link href="{{ url_for('static', filename='mystyle4.css') }}" rel="stylesheet">
                     <!-- Bootstrap -->
-                    <link href="{{ bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap') }}" rel="stylesheet">
+                    <link href="{{ url_for('static', filename='lib/bootstrap.min.css') }}" rel="stylesheet">
                 {%- endblock styles %}
             {%- endblock head %}
         </head>
         <body{% block body_attribs %}{% endblock body_attribs %}>
         {% block body -%}
-            <div class="container" id="main_container">
-                {% block navbar %}
-                    <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <!-- Brand and toggle get grouped for better mobile display -->
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="{{ url_for('index') }}">{{ config.BLOG_NAME }}</a>
-                            </div>
+            {% block navbar %}
+                <div class="container-fluid" id="main_container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="{{ url_for('index') }}">{{ config.BLOG_NAME }}</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                            <!-- Collect the nav links, forms, and other content for toggling -->
-                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                <ul class="nav navbar-nav">
-                                    <li id="nav-article"><a href="{{ url_for("index") }}">文章<span class="sr-only">(current)</span></a></li>
-                                    <li id="nav-utils"><a href="{{ url_for("utils_src") }}">杂项</a></li>
-                                </ul>
-                                <form action="/search" class="navbar-form navbar-left" method="get">
-                                    <div class="form-group">
-                                        <input name="keyword" type="text" class="form-control" placeholder="Search">
+                    <div class="collapse navbar-collapse">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ url_for("index") }}">文章 <span
+                                        class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for("utils_src") }}">杂项</a>
+                            </li>
+                            <form action="/search" class="form-inline my-2 my-lg-0" method="get">
+                                <input name="keyword" type="search" class="form-control mr-sm-2"
+                                       placeholder="Search">
+                                <button type="submit" class="btn btn-outline-success my-2 my-sm-0">搜索</button>
+                            </form>
+
+                        </ul>
+
+                        <ul class="navbar-nav">
+                            {% if current_user.is_authenticated %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                       role="button"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ current_user.name }}
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ url_for("write_article") }}">写文章</a>
+                                        <a class="dropdown-item" href="{{ url_for("auth.user_quit") }}">退出登录</a>
                                     </div>
-                                    <button  type="submit" class="btn btn-default">搜索</button>
-                                </form>
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li class="xt-hidden"><a href="#">RSS</a></li>
+                                </li>
+                            {% else %}
+                                <li class="nav-item"><a class="nav-link" href="{{ url_for("auth.user_login") }}">登录</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link"
+                                                        href="{{ url_for("auth.user_register") }}">注册</a></li>
+                            {% endif %}
+                        </ul>
 
-                                    {% if current_user.is_authenticated %}
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                               aria-haspopup="true"
-                                               aria-expanded="false">{{ current_user.name }}<span class="caret"></span></a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="{{ url_for("write_article") }}">写文章</a></li>
-                                                <!--<li><a href="#">文章管理</a></li>-->
-                                                <!--<li><a href="#">个人信息</a></li>-->
-                                                <li><a href="{{ url_for("auth.user_quit") }}">退出登录</a></li>
-                                            </ul>
-                                        </li>
-                                    {% else %}
-                                        <li><a href="{{ url_for("auth.user_login") }}" >登录</a></li>
-                                        <li><a href="{{ url_for("auth.user_register") }}" >注册</a></li>
-                                    {% endif %}
+                    </div>
 
-                                </ul>
-                            </div><!-- /.navbar-collapse -->
-                        </div><!-- /.container-fluid -->
-                    </nav>
-                {%- endblock navbar %}
-                {% block content -%}
-                {%- endblock content %}
-                {% block footer %}
+                </nav>
+            {%- endblock navbar %}
 
-                    <footer>
-                        <p>
-                            <small> My WebSite,
-                                <a href="{{ config.GITHUB_LINK }}" target="_blank">github Link, </a>Powered By Flask 2017-2018, VeekXT.
-                            </small>
-                        </p>
-                    </footer>
-                {%- endblock footer %}
-            </div>
+            {% block content -%}
+            {%- endblock content %}
+
+
+        {% block footer %}
+
+            <footer>
+                <p>
+                    <small> My WebSite,
+                        <a href="{{ config.GITHUB_LINK }}" target="_blank">github Link, </a>Powered By Flask
+                        2017-2018, VeekXT.
+                    </small>
+                </p>
+            </footer>
+        {%- endblock footer %}
+        </div>
             {% block scripts %}
-                <script src="{{ bootstrap_find_resource('jquery.js', cdn='jquery') }}"></script>
-                <script src="{{ bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap') }}"></script>
-
+                <script src="{{ url_for('static', filename='lib/jquery-3.3.1.slim.min.js') }}"></script>
+                <script src="{{ url_for('static', filename='lib/popper.min.js') }}"></script>
+                <script src="{{ url_for('static', filename='lib/bootstrap.min.js') }}"></script>
             {%- endblock scripts %}
         {%- endblock body %}
         </body>

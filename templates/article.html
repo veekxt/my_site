@@ -6,7 +6,7 @@
 {% block content -%}
     <!--suppress ALL -->
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-sm-9">
             <div class="panel panel-default">
                 <div class="panel-heading my-title" id="article_title">{{ article_dict["title"] }}</div>
                 <div class="panel-body" id="main_article">
@@ -28,12 +28,13 @@
             </div>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3">
             <div class="list-group">
                 <li class="list-group-item list-group-item-info">标签</li>
                 {% for tag in tag_dict %}
-                    <a class="list-group-item " href="{{ url_for("index", tag=tag_dict[tag][0]) }}"><span
-                            class="badge">{{ tag_dict[tag][1] }}</span>{{ tag }}</a>
+                    <a class="list-group-item list-group-item-action"
+                       href="{{ url_for("index", tag=tag_dict[tag][0]) }}">{{ tag }}<span
+                            class="badge badge-secondary float-right">{{ tag_dict[tag][1] }}</span></a>
                 {% endfor %}
             </div>
         </div>
