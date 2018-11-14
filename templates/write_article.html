@@ -13,24 +13,26 @@
         {% endif %}
         <div class="card-body">
             <div class="input-group">
-                <span class="input-group-addon">标题</span>
+                <span class="input-group-text">标题</span>
                 <input id="a_title" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1"
                        {% if article %}value="{{ article.title }}"{% endif %}>
             </div>
             {% if not article %}
                 <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon2">标签</span>
+                    <span class="input-group-text" id="basic-addon2">标签</span>
                     <input type="text" class="form-control" placeholder="使用逗号分割多个标签" aria-describedby="basic-addon1"
                            id="input_tag">
                     <button type="button" class="btn btn-default" id="select_tags">选择已有标签</button>
                     <br/>
-                    <span id="tagarea"></span>
+
                 </div>
+
+                <div id="tagarea"></div>
             {% endif %}
-            <nav class="navbar navbar-default">
-                <button type="button" class="btn btn-default navbar-btn" id="edit_btn">编辑</button>
-                <button type="button" class="btn btn-default navbar-btn" id="pre_btn">预览</button>
-                <button type="button" class="btn btn-default navbar-btn" id="push_article">提交</button>
+<br />
+                <button type="button" class="btn btn-default" id="edit_btn">编辑</button>
+                <button type="button" class="btn btn-default" id="pre_btn">预览</button>
+                <button type="button" class="btn btn-default" id="push_article">提交</button>
 
                 <textarea id="input_area" class="form-control" rows="20" placeholder="这里输入正文(markdown)"
                 >{% if article %}{{ article.text }}{% endif %}</textarea>
@@ -38,7 +40,7 @@
                     <div class="card-body">
                     </div>
                 </div>
-            </nav>
+
 
 
         </div>
