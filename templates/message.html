@@ -6,10 +6,10 @@
 
 {% block utilutil_id_main %}
 
-    only veekxt can read, required login "veekxt"
+    <p>only veekxt can read, required login "veekxt"</p>
 
     <div class="input-group">
-        <input id="text_area" type="text" class="form-control" placeholder="">
+        <textarea id="text_area" type="text" class="form-control" placeholder=""></textarea>
         <span class="input-group-btn">
         <button id="add_mess" class="btn btn-default" type="button">添加(ADD)</button>
       </span>
@@ -29,7 +29,9 @@
             let data = {"mess": text_area.value};
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    messages.insertAdjacentHTML("afterbegin", "<p>" + text_area.value + "</p>");
+                    //messages.insertAdjacentHTML("afterbegin", "<p>" + text_area.value + "</p>");
+                    messages.insertAdjacentHTML("afterbegin", '<pre style="white-space: pre-wrap;' +
+                        'word-wrap: break-word;"><code>' + text_area.value + "</pre></code>");
                     text_area.value = "";
                 }
             };
@@ -42,7 +44,8 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
                 let messList = JSON.parse(xhr.responseText);
                 for (let i in messList) {
-                    messages.insertAdjacentHTML("beforeend", "<p>" + messList[i] + "</p>");
+                    messages.insertAdjacentHTML("beforeend", '<pre style="white-space: pre-wrap;' +
+                        'word-wrap: break-word;"><code>' + messList[i] + "</pre></code>");
                 }
             }
         };
