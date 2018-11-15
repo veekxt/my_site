@@ -7,8 +7,9 @@
 {% block utilutil_id_main %}
 
     <p>选择你需要的组合来生成 v2ray 配置文件（4.X版本）。不使用的配置项将被忽略（不填或者填入任意值）。这里是本程序的源码以及生成好的若干模板：
-        <a target="_blank" href="https://github.com/veekxt/v2ray-template">https://github.com/veekxt/v2ray-template</a></p>
-    <br />
+        <a target="_blank" href="https://github.com/veekxt/v2ray-template">https://github.com/veekxt/v2ray-template</a>
+    </p>
+    <br/>
     <p> 传输协议：
         <select autocomplete="off" id="trans_proto">
             <option selected>tcp</option>
@@ -29,6 +30,13 @@
             <option value="2">socks</option>
             <option value="3">仅服务器：mtproto</option>
         </select>
+        &nbsp;&nbsp;
+        <span class="d-inline">
+        <input class="" type="checkbox" value="" id="extra_check">
+        <label class="" for="extra_check">
+            额外的mtproto
+        </label>
+    </span>
     </p>
     <br/>
     <div>
@@ -171,7 +179,8 @@
                 "reversed_proxy": document.querySelector("#reversed").selectedIndex,
                 "ws_path": document.querySelector("#ws_path").value,
                 "tls_file": document.querySelector("#tls_file").value,
-                "tls_key": document.querySelector("#tls_key").value
+                "tls_key": document.querySelector("#tls_key").value,
+                "extra_mtproto":document.querySelector("#extra_check").checked,
 
             };
 
@@ -198,7 +207,7 @@
                             port = j.value;
                         }
                     })
-                    if(route !== null)
+                    if (route !== null)
                         data["in"].push({"route": route, "type": type, "port": port});
                 }
             });
