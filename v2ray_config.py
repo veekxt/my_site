@@ -5,13 +5,13 @@ import string
 import uuid
 from collections import OrderedDict
 
-trans_protocol = ["tcp", "kcp", "ws", "http"]
+trans_protocol = ["tcp", "kcp", "ws", "http", "quic"]
 data_protocol = ["vmess", "shadowsocks", "socks", "mtproto"]
 in_protocol = ["socks", "http"]
 use_tls = ["none", "tls"]
 
 config_from_t = {
-    "trans_protocol": 2,
+    "trans_protocol": 4,
     "tls": 1,
     "data_protocol": 3,
     "in": [{"route": 0, "type": 0, "port": 1080}, {"route": 1, "type": 1, "port": 1081},
@@ -161,6 +161,15 @@ def get_v2ray_config(config_from):
             "path": config_from["ws_path"],
             "host": [server_name]
         }
+    elif network == "quic":
+        stream["quicSettings"] = {
+            "security": "aes-128-gcm",
+            "key": "",
+            "header": {
+                "type": "none"
+            }
+        }
+        # todo: quic
     if config_from["tls"] == 1:
         stream["tlsSettings"] = {
             "serverName": server_name,
@@ -420,4 +429,6 @@ def rand_string(chars, len_c):
 
 if __name__ == "__main__":
     (a, b, c, d, e, f) = get_v2ray_config(config_from_t)
+    print(d)
+    print("================================================")
     print(e)
