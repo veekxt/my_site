@@ -439,5 +439,5 @@ def rand_string(chars, len_c):
 if __name__ == "__main__":
     (a, b, c, d, e, f) = get_v2ray_config(config_from_t)
     print(d)
-    print("================================================")
+    print("===============================================")
     print(e)
