@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 # encoding:utf-8
+import json
 import os
 from datetime import datetime
 
-from flask import Flask, request, render_template, url_for, flash, Blueprint
-from sqlalchemy import desc
-from werkzeug.utils import secure_filename, redirect
-import json
-from flask_login import current_user, login_required
-from my_utils import my_secure_filename, hgihtlight_word
-from data_model import db, Article, User, Tag, Message, Link
-from auth import login_manager
-import config_t
-from auth import auth as auth_blueprint
 import commonmark
+import flask
+from flask import Flask, request, render_template, url_for, flash
+from flask_login import current_user, login_required
+from sqlalchemy import desc
+from werkzeug.utils import redirect
+
+import config_t
 import v2ray_config
+from auth import auth as auth_blueprint
+from auth import login_manager
+from data_model import db, Article, Tag, Message, Link
+from my_utils import my_secure_filename, hgihtlight_word
 
 app = Flask(__name__)
 app.config.from_object(config_t)
@@ -27,13 +29,14 @@ app.jinja_env.globals.update(hgihtlight_word=hgihtlight_word)
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template('404.html'), 404
+    return render_template('404.html', error=e), 404
+
 
 # @app.route("/utils")
 # def utils():
 #    tag = Tag.query.all()
 #    for a in tag:
-#        print(a.name)2
+#        print(a.name)
 #        tagmap = Tagmap.query.filter_by(tag_id=a.id).all()
 #        print(len(tagmap))
 #        for ar in tagmap:
@@ -51,10 +54,7 @@ def get_tag_dict():
 
 
 def root_required(func):
-    '''
-    装饰器，有些操作只有我能执行，验证current_user为管理员
-    '''
-
+    # 装饰器，有些操作只有我能执行，验证current_user为管理员
     def access_is_0(*args, **kwargs):
         if current_user.access == 0:
             func(*args, **kwargs)
@@ -70,7 +70,6 @@ def root_required(func):
 def index():
     url_page = request.args.get("page", 1, type=int)
     url_tag = request.args.get("tag", type=int)
-    pagination = None
     if url_tag:
         c_tag = Tag.query.filter_by(id=url_tag).first()
         pagination = c_tag.articles.order_by(desc(Article.time)).paginate(url_page,
@@ -141,14 +140,14 @@ def post_article():
     return "OK"
 
 
-@app.route('/modify_article/<id>', methods=['POST'])
+@app.route('/modify_article/<a_id>', methods=['POST'])
 @login_required
-def modify_article(id):
+def modify_article(a_id):
     if current_user.access != 0:
         # flash("当前用户没有修改文章！")
         return "Cant access!"
     try:
-        article = Article.query.get(int(id))
+        article = Article.query.get(int(a_id))
         article_info = json.loads(str(request.get_data(), encoding="utf-8"))
         article.text = article_info["main"]
         article.title = article_info["title"]
@@ -178,16 +177,17 @@ def modify_article(id):
 @app.route('/select_tags')
 def select_tags():
     rs = []
-    all = Tag.query.all()
-    for i in all:
+    rs_all = Tag.query.all()
+    for i in rs_all:
         rs.append(i.name)
     return json.dumps(rs)
 
 
-@app.route("/article/<id>")
-def a_article(id):
-    article = Article.query.get(int(id))
-    if not article: app.abort(404)
+@app.route("/article/<a_id>")
+def a_article(a_id):
+    article = Article.query.get(int(a_id))
+    if not article:
+        flask.abort(404)
     parser = commonmark.Parser()
     ast = parser.parse(article.text)
     renderer = commonmark.HtmlRenderer()
@@ -200,12 +200,12 @@ def a_article(id):
         "author": article.user.name
     }
 
-    return render_template("article.html", id=id, tag_dict=get_tag_dict(), article_dict=article_dict)
+    return render_template("article.html", id=a_id, tag_dict=get_tag_dict(), article_dict=article_dict)
 
 
-@app.route("/article_info/<id>")
-def a_article_info(id):
-    article = Article.query.get(int(id))
+@app.route("/article_info/<a_id>")
+def a_article_info(a_id):
+    article = Article.query.get(int(a_id))
     article_json = {
         "title": article.title,
         "time": str(article.time),
@@ -215,24 +215,24 @@ def a_article_info(id):
     return json.dumps(article_json)
 
 
-@app.route("/article/delete/<id>")
+@app.route("/article/delete/<a_id>")
 @login_required
-def del_article(id):
+def del_article(a_id):
     if current_user.access != 0:
         return "Cant access!"
-    article = Article.query.get(int(id))
+    article = Article.query.get(int(a_id))
     db.session.delete(article)
     db.session.commit()
     flash("已删除一篇文章！")
     return redirect(url_for("index"))
 
 
-@app.route("/article/modify/<id>")
+@app.route("/article/modify/<a_id>")
 @login_required
-def modify_articcle(id):
+def modify_articcle(a_id):
     if current_user.access != 0:
         return "Cant access!"
-    article = Article.query.get(int(id))
+    article = Article.query.get(int(a_id))
     return render_template('write_article.html', article=article)
 
 
@@ -257,8 +257,8 @@ def utils(wh):
     if wh == "message":
         pass
     elif wh == "links":
-        all = Link.query.all()
-        return render_template(wh + ".html", util_id=wh, links=all)
+        rs_all = Link.query.all()
+        return render_template(wh + ".html", util_id=wh, links=rs_all)
     return render_template(wh + ".html", util_id=wh)
 
 
@@ -270,7 +270,7 @@ def add_mess():
         time=datetime.now()
     )
     if mess.message == "":
-        app.abort(500)
+        flask.abort(500)
         return
     db.session.add(mess)
     db.session.commit()
@@ -286,7 +286,7 @@ def add_links():
         link=link_info['addr']
     )
     if link.title == "" or link.link == "":
-        app.abort(500)
+        flask.abort(500)
         return
     db.session.add(link)
     db.session.commit()
@@ -296,14 +296,15 @@ def add_links():
 @app.route("/get_mess")
 def get_mess():
     if current_user.access != 0:
-        app.abort(500)
+        flask.abort(500)
     n = int(request.args.get("n"))
-    if n == None or n == 0:
+    if n is None or n == 0:
         n = 10
-    all = Message.query.order_by(desc(Message.id)).all()
+    rs_all = Message.query.order_by(desc(Message.id)).all()
     rs = []
-    for i, j in enumerate(all):
-        if i > n: break
+    for i, j in enumerate(rs_all):
+        if i > n:
+            break
         rs.append(j.message)
     return json.dumps(rs)
 
@@ -316,7 +317,7 @@ def gen_v2ray_config():
     conf_r = ""
     if data_re[0] == 1:
         conf_r = render_template("nginx.conf", port=data_re[1], server_name=data_re[2], path=data_re[3],
-                                 be_proxy=data_re[4],tls_config=data_re[5],ssl=data_re[6])
+                                 be_proxy=data_re[4], tls_config=data_re[5], ssl=data_re[6])
     elif data_re[0] == 2:
         conf_r = render_template("Caddyfile-ws", domain=data_re[1], tls=data_re[2], path=data_re[3],
                                  be_proxy=data_re[4])

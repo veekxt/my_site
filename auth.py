@@ -16,6 +16,7 @@ login_manager.session_protection = None
 login_manager.login_view = "auth.user_login"
 login_manager.login_message = "访问这个页面需要登录！"
 
+
 class LoginForm(FlaskForm):
     name = StringField(validators=[DataRequired()])
     password = PasswordField(validators=[DataRequired()])
@@ -39,14 +40,14 @@ def load_user(user_id):
 @auth.route('/login', methods=['GET', 'POST'])
 def user_login():
     form = LoginForm()
-    if (request.method == "POST"):
-        if form.validate_on_submit():
-            user = User.query.filter_by(name=form.name.data).first()
-            if user is not None and check_password_hash(user.password_hash, form.password.data):
-                login_user(user, form.remember_me.data)
-                return redirect(request.args.get("next") or url_for("index"))
-            flash("登录失败！");
+    if request.method == "POST" and form.validate_on_submit():
+        user = User.query.filter_by(name=form.name.data).first()
+        if user is not None and check_password_hash(user.password_hash, form.password.data):
+            login_user(user, form.remember_me.data)
+            return redirect(request.args.get("next") or url_for("index"))
+        flash("登录失败！");
     return render_template('login.html', form=form)
+
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -56,10 +57,9 @@ def user_register():
         if form.validate_on_submit():
             is_success = True
             try:
-                user = User(email=form.email.data,
-                            create_at=datetime.now(),
-                            name=form.user_name.data,
+                user = User(email=form.email.data, create_at=datetime.now(), name=form.user_name.data,
                             password_hash=generate_password_hash(form.password_1.data))
+
                 db.session.add(user)
                 db.session.commit()
             except:

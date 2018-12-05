@@ -13,7 +13,7 @@
 
                 {% for a in pagination.items %}
                     <a class="xt-title list-group-item list-group-item-action"
-                       href="{{ url_for("a_article",id=a.id) }}">
+                       href="{{ url_for("a_article",a_id=a.id) }}">
                         {% if search_keyword %}
                             {{ hgihtlight_word(a.title,search_keyword)|safe }}
                         {% else %}

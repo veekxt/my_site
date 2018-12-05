@@ -73,7 +73,7 @@
             var xhr = new XMLHttpRequest();
             let url = "post_article";
             {% if article %}
-                url = "{{ url_for("modify_article",id=article.id) }}";
+                url = "{{ url_for("modify_article",a_id=article.id) }}";
             {% endif %}
             xhr.open("post", url);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
