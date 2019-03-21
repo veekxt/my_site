@@ -85,6 +85,7 @@ def index():
 
 
 @app.route('/up', methods=['GET', 'POST'])
+@login_required
 def my_upload():
     if request.method == "POST":
         f = request.files['inputfile']
