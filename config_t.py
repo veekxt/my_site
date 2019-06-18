@@ -4,7 +4,7 @@ BLOG_NAME = 'VeekXT'
 GITHUB_LINK = 'https://github.com/veekxt/my_site'
 
 BOOTSTRAP_SERVE_LOCAL = True
-SECRET_KEY = os.environ.get("VSECRET_KEY")
+SECRET_KEY = "some random string"
 
 # database
 DATABASE = os.environ.get("VDATABASE")
