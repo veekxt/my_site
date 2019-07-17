@@ -85,19 +85,19 @@ def index():
 
 
 @app.route('/up', methods=['GET', 'POST'])
-@login_required
 def my_upload():
-    print("==============> get post1")
     if request.method == "POST":
-        print("==============> get post2")
-        f = request.files['inputfile']
-        if os.name == "posix":
-            upload_path = os.path.join("/myvps", 'upload', my_secure_filename(f.filename))
-        else:
-            upload_path = os.path.join("e:\\tmp", '', my_secure_filename(f.filename))
+        if not current_user.is_anonymous:
+            f = request.files['inputfile']
+            if os.name == "posix":
+                upload_path = os.path.join("/myvps", 'upload', my_secure_filename(f.filename))
+            else:
+                upload_path = os.path.join("e:\\tmp", '', my_secure_filename(f.filename))
 
-        f.save(upload_path)
-        return redirect(url_for('my_upload'))
+            f.save(upload_path)
+            return redirect(url_for('my_upload'))
+        else:
+            flask.abort(401)
     return render_template('up.html')
 
 

@@ -48,6 +48,7 @@
                 xhr.open("post", "/up");
                 //回调
                 xhr.onreadystatechange = function () {
+
                     if (xhr.readyState == 4 ) {
                         if (xhr.status == 200) {
                             //document.querySelector("#upcallback").innerText = xhr.responseText;
