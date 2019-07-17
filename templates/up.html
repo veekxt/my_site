@@ -10,23 +10,27 @@
     <p>
         Visit List From <a href="//veekxt.com/upload/">Here</a>
     </p>
-    <br/>
-    <form action="" enctype='multipart/form-data' method='POST'>
-        <div class="form-group">
-            <label for="">File input</label>
-            <input type="file" name="inputfile" id="inputfile">
-        </div>
-    </form>
-    <button id="up_btn" class="btn btn-light">上传</button><span id="warn"></span>
-    <br/>
-    <br/>
+    {% if current_user.is_authenticated %}
+        <br/>
+        <form action="" enctype='multipart/form-data' method='POST'>
+            <div class="form-group">
+                <label for="">File input</label>
+                <input type="file" name="inputfile" id="inputfile">
+            </div>
+        </form>
+        <button id="up_btn" class="btn btn-light">上传</button><span id="warn"></span>
+        <br/>
+        <br/>
 
-    <div class="progress">
-        <div id="up_pro" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0"
-             aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-            <span id="up_warn"></span>
+        <div class="progress">
+            <div id="up_pro" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0"
+                 aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span id="up_warn"></span>
+            </div>
         </div>
-    </div>
+    {% else %}
+    {% endif %}
+
 
 {% endblock utilutil_id_main %}
 
@@ -49,14 +53,14 @@
                 //回调
                 xhr.onreadystatechange = function () {
 
-                    if (xhr.readyState == 4 ) {
+                    if (xhr.readyState == 4) {
                         if (xhr.status == 200) {
                             //document.querySelector("#upcallback").innerText = xhr.responseText;
                             document.querySelector("#up_pro").style.width = 0;
                             document.querySelector("#warn").innerText = "  已完成: " + file.name;
                             document.querySelector("#up_warn").innerText = "";
-                        }else{
-                            document.querySelector("#warn").innerText = "  出错: "  + file.name;
+                        } else {
+                            document.querySelector("#warn").innerText = "  出错: " + file.name;
                             document.querySelector("#up_pro").style.width = 0;
                         }
 
