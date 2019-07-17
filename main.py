@@ -87,7 +87,9 @@ def index():
 @app.route('/up', methods=['GET', 'POST'])
 @login_required
 def my_upload():
+    print("==============> get post1")
     if request.method == "POST":
+        print("==============> get post2")
         f = request.files['inputfile']
         if os.name == "posix":
             upload_path = os.path.join("/myvps", 'upload', my_secure_filename(f.filename))
