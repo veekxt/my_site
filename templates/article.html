@@ -45,7 +45,10 @@
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for("static", filename="highlight.min.js") }}"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        hljs.initHighlightingOnLoad();
+        hljs.configure({languages: []});
+    </script>
     <script>
         function get_article_id() {
             var url = document.location.toString();
