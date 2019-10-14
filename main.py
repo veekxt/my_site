@@ -314,7 +314,7 @@ def get_mess():
 @app.route("/test_json")
 def get_test_json():
     rs = {
-    "type": "string" / "qr_code",
+    "type": "string",
     "data": "测试字符串。中文。",
     "format":
         {
