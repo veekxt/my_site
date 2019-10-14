@@ -183,7 +183,7 @@ def select_tags():
     rs_all = Tag.query.all()
     for i in rs_all:
         rs.append(i.name)
-    return json.dumps(rs)
+    return json.dumps(rs, ensure_ascii=False)
 
 
 @app.route("/article/<a_id>")
@@ -215,7 +215,7 @@ def a_article_info(a_id):
         "text": article.text,
         "author": article.user.name
     }
-    return json.dumps(article_json)
+    return json.dumps(article_json, ensure_ascii=False)
 
 
 @app.route("/article/delete/<a_id>")
@@ -309,7 +309,7 @@ def get_mess():
         if i > n:
             break
         rs.append(j.message)
-    return json.dumps(rs)
+    return json.dumps(rs, ensure_ascii=False)
 
 
 @app.route("/gen_v2ray_config", methods=['POST'])
