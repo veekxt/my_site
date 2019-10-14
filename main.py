@@ -311,6 +311,33 @@ def get_mess():
         rs.append(j.message)
     return json.dumps(rs, ensure_ascii=False)
 
+@app.route("/test_json")
+def get_test_json():
+    rs = {
+    "type": "string" / "qr_code",
+    "data": "测试字符串。中文。",
+    "format":
+        {
+            "line_spacing": 3,
+            "para_spacing": 1.72,
+            "font": "Consolas",
+            "font_size": 12,
+            "bold": True ,
+            "extra":[
+                {
+                    "extra_1":"hi",
+                    "extra_2":"hello",
+                },
+                {
+                    "extra_3": "hi",
+                    "extra_4": "hello",
+                    "extra_5": "另一串中文"
+                }
+            ]
+        }
+    }
+    return json.dumps(rs, ensure_ascii=False)
+
 
 @app.route("/gen_v2ray_config", methods=['POST'])
 def gen_v2ray_config():
