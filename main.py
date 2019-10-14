@@ -311,7 +311,7 @@ def get_mess():
         rs.append(j.message)
     return json.dumps(rs, ensure_ascii=False)
 
-@app.route("/test_json")
+@app.route("/test_json", methods=['POST', 'GET'])
 def get_test_json():
     rs = {
     "type": "string",
