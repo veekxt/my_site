@@ -323,7 +323,7 @@ def get_hex(t_string):
     en = t_string.encode(encoding="utf-16")
     s1 = ''.join([r'\x' + '%02x' % b for b in en])
     tar += "utf-16 encode, len( " + str(len(en)) + " ):  " + s1 + "\n"
-    return tar
+    return render_template("hex.html", hex_str=tar)
     
 @app.route("/test_json", methods=['POST', 'GET'])
 def get_test_json():
