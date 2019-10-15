@@ -313,8 +313,11 @@ def get_mess():
 
 @app.route("/hex/<t_string>", methods=['POST', 'GET'])
 def get_hex(t_string):
-    sp = request.args.get("sp")
-    if len(sp) == 0:
+    try:
+        sp = request.args.get("sp")
+    except Exception:
+        pass
+    if sp or len(sp) == 0:
         sp=r'\x'
     tar = t_string + "\n"
     en = t_string.encode(encoding="utf-8")
