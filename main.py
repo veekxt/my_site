@@ -317,7 +317,7 @@ def get_hex(t_string):
         sp = request.args.get("sp")
     except Exception:
         pass
-    if sp or len(sp) == 0:
+    if not sp or len(sp) == 0:
         sp=r'\x'
     tar = t_string + "\n"
     en = t_string.encode(encoding="utf-8")
