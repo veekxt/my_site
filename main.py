@@ -314,6 +314,8 @@ def get_mess():
 @app.route("/hex/<t_string>", methods=['POST', 'GET'])
 def get_hex(t_string):
     sp = request.args.get("sp")
+    if len(sp) == 0:
+        sp=r'\x'
     tar = t_string + "\n"
     en = t_string.encode(encoding="utf-8")
     s1 = ''.join([sp + '%02x' % b for b in en])
