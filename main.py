@@ -312,7 +312,7 @@ def get_mess():
     return json.dumps(rs, ensure_ascii=False)
 
 @app.route("/hex/<t_string>", methods=['POST', 'GET'])
-def get_hex():
+def get_hex(t_string):
     tar = ""
     en = t_string.encode(encoding="utf-8")
     s1 = ''.join([r'\x' + '%02x' % b for b in en])
