@@ -313,15 +313,16 @@ def get_mess():
 
 @app.route("/hex/<t_string>", methods=['POST', 'GET'])
 def get_hex(t_string):
+    sp = request.args.get("sp")
     tar = t_string + "\n"
     en = t_string.encode(encoding="utf-8")
-    s1 = ''.join([r'\x' + '%02x' % b for b in en])
+    s1 = ''.join([sp + '%02x' % b for b in en])
     tar += "utf-8 encode, len( " + str(len(en)) + " ):  " + s1 + "\n"
     en = t_string.encode(encoding="gbk")
-    s1 = ''.join([r'\x' + '%02x' % b for b in en])
+    s1 = ''.join([sp + '%02x' % b for b in en])
     tar += "gbk encode, len( " + str(len(en)) + " ):  " + s1 + "\n"
     en = t_string.encode(encoding="utf-16")
-    s1 = ''.join([r'\x' + '%02x' % b for b in en])
+    s1 = ''.join([sp + '%02x' % b for b in en])
     tar += "utf-16 encode, len( " + str(len(en)) + " ):  " + s1 + "\n"
     return render_template("hex.html", hex_str=tar)
     
